@@ -2,14 +2,15 @@
   "id": "deepnight",
   "title": "Deepnight Revelation Campaign Tracker",
   "description": "A module to keep track the various numbers used in the Deepnight Revelation campaign by Mongoose Publishing.",
+  "version": "0.1.0",
   "authors": [
     {
       "id": "RadioFreeWABA",
       "email": "swdevlin@hey.com",
+      "name": "Shawn Devlin",
       "url": "https://openmuse.info"
     }
   ],
-  "version": "0.1.0",
   "compatibility": {
     "minimum": "10",
     "verified": "10"
@@ -21,7 +22,10 @@
       "path": "lang/en.json"
     }
   ],
-  "scripts": [
-    "scripts/deepnight.js"
+  "esmodules": [
+    "deepnight.mjs"
+  ],
+  "styles": [
+    "./styles/deepnight.css"
   ]
 }

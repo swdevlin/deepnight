@@ -1,0 +1,14 @@
+{
+  "DEEPNIGHT": {
+    "buttonName": "Deepnight",
+    "buttonTitle": "Deepnight Revelation",
+    "shipButtonName": "Console",
+    "shipButtonTitle": "Deepnight Revelation console",
+    "jumpButtonName": "Jump",
+    "jumpButtonTitle": "Track jump time",
+    "dayButtonName": "Day",
+    "dayButtonTitle": "One day passes",
+    "watchButtonName": "Watch",
+    "watchButtonTitle": "One watch passes"
+  }
+}
