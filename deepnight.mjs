@@ -35,7 +35,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
   let tools = [{
       name: game.i18n.localize("DEEPNIGHT.shipButtonName"),
       title: game.i18n.localize("DEEPNIGHT.shipButtonTitle"),
-      icon: "fa-regular fa-panel-ews",
+      icon: "dnr-console",
       button: true,
       onClick: () => {
         ship.jump();
@@ -76,7 +76,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
       name: "DEEPNIGHT.buttonName",
       title: "DEEPNIGHT.buttonTitle",
       layer: "controls",
-      icon: "fa fa-star",
+      icon: "dnr-shipicon",
       visible: true,
       tools: tools,
     });
