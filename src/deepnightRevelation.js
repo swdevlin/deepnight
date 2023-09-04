@@ -1,3 +1,5 @@
+import {RevelationConsole} from "./revelationConsole.js";
+
 export class DeepnightRevelation extends Application {
   constructor(src, options = {}) {
     super(src, options);
@@ -7,7 +9,9 @@ export class DeepnightRevelation extends Application {
     this.daysOnMission = 0;
     this.morale = 0;
     this.supplies = 200000;
-    this.specialMaterials = 0;
+    this.rareMaterials = 0;
+    this.rareBiologicals = 0;
+    this.exoticMaterials = 0;
     this.cfi = 0;
     this.command = {
       missionCommander: null,
@@ -47,7 +51,12 @@ export class DeepnightRevelation extends Application {
     };
 
     /** @type {Event} */
-    this.eventListener;
+    // this.eventListener;
+  }
+
+  displayConsole() {
+    const console = new RevelationConsole(this);
+    console.render(true);
   }
 
   templateData() {

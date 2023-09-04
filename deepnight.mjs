@@ -39,6 +39,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
       icon: "fa-solid fa-panel-ews",
       button: true,
       onClick: () => {
+        ship.displayConsole();
         console.log('show status panel')
       },
     },
