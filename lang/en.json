@@ -2,12 +2,16 @@
   "DEEPNIGHT": {
     "buttonName": "Deepnight",
     "buttonTitle": "Deepnight Revelation",
-    "shipButtonName": "Console",
-    "shipButtonTitle": "Deepnight Revelation console",
-    "jumpButtonName": "Jump",
-    "jumpButtonTitle": "Track jump time",
+    "commandButtonName": "Command",
+    "commandButtonTitle": "Deepnight Revelation command",
     "dayButtonName": "Day",
     "dayButtonTitle": "One day passes",
+    "daysOnMission": "Days on mission",
+    "jumpButtonName": "Jump",
+    "jumpButtonTitle": "Track jump time",
+    "missionDate": "Date",
+    "shipButtonName": "Console",
+    "shipButtonTitle": "Deepnight Revelation console",
     "watchButtonName": "Watch",
     "watchButtonTitle": "One watch passes"
   }

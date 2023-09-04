@@ -1,4 +1,4 @@
-import {DeepnightRevelation} from "./scripts/deepnightRevelation.js";
+import {DeepnightRevelation} from "./src/deepnightRevelation.js";
 
 const ship = new DeepnightRevelation({
   // baseApplication: setting.name.trim(),
@@ -32,15 +32,26 @@ Hooks.on("getSceneControlButtons", (controls) => {
   // }
 
   // init tools array for buttons
-  let tools = [{
+  let tools = [
+    {
       name: game.i18n.localize("DEEPNIGHT.shipButtonName"),
       title: game.i18n.localize("DEEPNIGHT.shipButtonTitle"),
-      icon: "dnr-console",
+      icon: "fa-solid fa-panel-ews",
       button: true,
       onClick: () => {
-        ship.jump();
+        console.log('show status panel')
       },
-  }];
+    },
+    {
+      name: game.i18n.localize("DEEPNIGHT.commandButtonName"),
+      title: game.i18n.localize("DEEPNIGHT.commandButtonTitle"),
+      icon: "fa-solid fa-sitemap",
+      button: true,
+      onClick: () => {
+        console.log('show org chart')
+      },
+    },
+  ];
 
   if (game.user.isGM) {
     tools.push({
@@ -58,7 +69,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
       icon: "fa-regular fa-calendar-day",
       button: true,
       onClick: () => {
-        ship.incDay();
+        ship.dayPasses();
       },
     });
     tools.push({
@@ -67,7 +78,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
       icon: "fa-regular fa-watch",
       button: true,
       onClick: () => {
-        ship.incWatch();
+        ship.watchPasses();
       },
     });
   }
