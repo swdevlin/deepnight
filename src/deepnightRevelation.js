@@ -1,6 +1,7 @@
 import {RevelationConsole} from "./revelationConsole.js";
 
 export class DeepnightRevelation extends Application {
+  static ID = 'deepnight';
   constructor(src, options = {}) {
     super(src, options);
     this.year = 1105;
@@ -54,9 +55,10 @@ export class DeepnightRevelation extends Application {
     // this.eventListener;
   }
 
-  displayConsole() {
-    const console = new RevelationConsole(this);
-    console.render(true);
+  async updatePanel() {
+    const section = document.querySelector('section#deepnight');
+    const status = await renderTemplate('modules/deepnight/src/templates/sidebar-contents.hbs', this.templateData());
+    section.innerHTML = status;
   }
 
   templateData() {
@@ -98,6 +100,14 @@ export class DeepnightRevelation extends Application {
     ChatMessage.create(chatData, {});
   }
 
+  updateStore() {
+    game.settings.set('deepnight', 'year', this.year);
+    game.settings.set('deepnight', 'day', this.day);
+    game.settings.set('deepnight', 'watch', this.watch);
+    game.settings.set('deepnight', 'supplies', this.supplies);
+    game.settings.set('deepnight', 'daysOnMission', this.daysOnMission);
+  }
+
   async jump() {
     for (let i=0; i < 6; i++)
       this.incDay();
@@ -108,6 +118,7 @@ export class DeepnightRevelation extends Application {
     console.log(watches);
     for (let i=0; i < watches; i++)
       this.incWatch();
+    this.updateStore();
     this.postTime();
   }
 
