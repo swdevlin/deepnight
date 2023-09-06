@@ -5,4 +5,9 @@
   background-image: url(../icons/revelation.png);
   background-repeat: no-repeat;
   background-size: contain;
+  background-position-y: center;
+}
+
+div.dnr-buttons {
+  line-height: 24px;
 }

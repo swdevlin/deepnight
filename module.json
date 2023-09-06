@@ -23,7 +23,7 @@
     }
   ],
   "esmodules": [
-    "deepnight.mjs"
+    "deepnight.js"
   ],
   "styles": [
     "./styles/deepnight.css"
