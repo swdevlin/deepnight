@@ -13,6 +13,7 @@
     "shipButtonName": "Console",
     "shipButtonTitle": "Deepnight Revelation console",
     "watchButtonName": "Watch",
-    "watchButtonTitle": "One watch passes"
+    "watchButtonTitle": "One watch passes",
+    "saveButtonTitle": "Save"
   }
 }

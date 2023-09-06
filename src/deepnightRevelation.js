@@ -112,7 +112,23 @@ export class DeepnightRevelation extends Application {
     $('#dnr-watch').on('click', () => {
       this.watchPasses();
     });
+    $('#dnr-save').on('click', () => {
+      this.saveEdits();
+    });
+  }
 
+  saveEdits() {
+    this.cei = parseInt($('input#cei').val(), 10);
+    this.ceim = parseInt($('input#ceim').val(), 10);
+    this.mission.dei = parseInt($('input#mission-dei').val(), 10);
+    this.mission.crew = parseInt($('input#mission-crew').val(), 10);
+    this.operations.dei = parseInt($('input#operations-dei').val(), 10);
+    this.operations.crew = parseInt($('input#operations-crew').val(), 10);
+    this.engineering.dei = parseInt($('input#engineering-dei').val(), 10);
+    this.engineering.crew = parseInt($('input#engineering-crew').val(), 10);
+    this.flight.dei = parseInt($('input#flight-dei').val(), 10);
+    this.flight.crew = parseInt($('input#flight-crew').val(), 10);
+    this.saveSettings();
   }
 
   templateData() {
@@ -121,7 +137,17 @@ export class DeepnightRevelation extends Application {
       day: this.day,
       watch: this.watch,
       daysOnMission: this.daysOnMission,
+      morale: this.morale,
+      cei: this.cei,
+      ceim: this.ceim,
       supplies: this.supplies.toLocaleString(),
+      rareMaterials: this.rareMaterials.toLocaleString(),
+      exoticMaterials: this.exoticMaterials.toLocaleString(),
+      rareBiologicals: this.rareBiologicals.toLocaleString(),
+      mission: this.mission,
+      flight: this.flight,
+      operations: this.operations,
+      engineering: this.engineering,
     }
   }
 

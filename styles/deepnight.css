@@ -11,3 +11,68 @@
 div.dnr-buttons {
   line-height: 24px;
 }
+
+.dnr-panels {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  list-style: none;
+}
+
+.dnr-panel {
+  width: 120px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: left;
+}
+
+.dnr-deipanel {
+  background-image: url('../artwork/dei-bg.png');
+  background-size: cover;
+  background-position: center center;
+}
+
+.dnr-ceipanel {
+  background-image: url('../artwork/cei-bg.png');
+  background-size: cover;
+  background-position: center center;
+}
+
+.dnr-crewpanel {
+  background-image: url('../artwork/crew-bg.png');
+  background-size: cover;
+  background-position: center center;
+}
+
+.dnr-ceimpanel {
+  background-image: url('../artwork/ceim-bg.png');
+  background-size: cover;
+  background-position: center center;
+}
+
+.dnr-panel-text {
+  text-align: center;
+}
+
+.dnr-controlcolour {
+  color: #82b3dd;
+}
+
+.dnr-small-label {
+  font-size: 0.7rem;
+  color: #82b3dd;
+}
+
+.dnr-header {
+  font-variant-caps: small-caps;
+  color: var(--s2d6-default-color);
+  /*#29aae1*/
+}
+
+.dnr-valueinput {
+  width: 60px !important;
+}

@@ -102,8 +102,8 @@ Hooks.once("init", () => {
     type: Object,
     restricted: true,
     default: {
-      dei: 0,
-      crew: 0,
+      dei: 7,
+      crew: 57,
     },
   });
 
@@ -113,8 +113,8 @@ Hooks.once("init", () => {
     type: Object,
     restricted: true,
     default: {
-      dei: 0,
-      crew: 0,
+      dei: 7,
+      crew: 92,
     },
   });
 
@@ -124,8 +124,8 @@ Hooks.once("init", () => {
     type: Object,
     restricted: true,
     default: {
-      dei: 0,
-      crew: 0,
+      dei: 7,
+      crew: 132,
     },
   });
 
@@ -135,8 +135,8 @@ Hooks.once("init", () => {
     type: Object,
     restricted: true,
     default: {
-      dei: 0,
-      crew: 0,
+      dei: 7,
+      crew: 195,
     },
     onchange: () => window.deepnightRevelation.loadFromSettings(),
   });
