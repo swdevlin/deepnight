@@ -141,14 +141,20 @@ Hooks.once("init", () => {
     onchange: () => window.deepnightRevelation.loadFromSettings(),
   });
 
-  // this.command = {
-  //   missionCommander: null,
-  //   captain: null,
-  //   xo: null,
-  //   chiefMissionOfficer: null,
-  //   chiefOperationsOfficer: null,
-  //   chiefFlightOfficer: null,
-  //   chiefEngineeringOfficer: null,
-  // }
+  game.settings.register("deepnight", "history", {
+    scope: "world",
+    config: false,
+    type: Array,
+    restricted: true,
+    default: []
+  });
+
+  game.settings.register("deepnight", "rollback", {
+    scope: "world",
+    config: false,
+    type: Number,
+    restricted: true,
+    default: -1
+  });
 
 });

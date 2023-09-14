@@ -13,7 +13,7 @@ Hooks.on('init', function() {
   console.log(`Deepnight | init`);
 });
 
-Hooks.on('ready', function() {
+Hooks.on('ready', async function() {
   window.deepnightRevelation.loadFromSettings();
   console.log(`Deepnight | ready`);
 });

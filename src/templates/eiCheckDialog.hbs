@@ -1,0 +1,66 @@
+<form>
+  <fieldset>
+    <legend>{{localize "DEEPNIGHT.RollDialog.RollDetails"}}</legend>
+    <div class="form-group">
+      <label>{{localize "DEEPNIGHT.RollDialog.Difficulty"}}
+        <select id="difficulty" name="difficulty">
+          {{#select difficulty}}
+            {{#each difficulties}}
+              <option value="{{@key}}">{{localize @key}} ({{this.mod}})
+              </option>
+            {{/each}}
+          {{/select}}
+        </select>
+      </label>
+    </div>
+    <div class="form-group">
+      <label>{{localize "DEEPNIGHT.RollDialog.Type"}}
+        <select id="rollType" name="rollType">
+          {{#select rollType}}
+            <option value="boon">{{localize "DEEPNIGHT.Boon"}}</option>
+            <option value="normal">{{localize "DEEPNIGHT.Normal"}}</option>
+            <option value="bane">{{localize "DEEPNIGHT.Bane"}}</option>
+          {{/select}}
+        </select>
+      </label>
+    </div>
+    <div class="form-group">
+      <label>{{localize "DEEPNIGHT.Fatigue"}}
+        <select id="fatigue" name="fatigue">
+          {{#select fatigue}}
+            {{#each fatigueLevels}}
+              <option value="{{@key}}">{{localize this.label}}
+              </option>
+            {{/each}}
+          {{/select}}
+        </select>
+      </label>
+    </div>
+    <div class="form-group">
+      <label>{{localize "TWODSIX.Chat.Roll.OtherModifiers"}}
+        <input id="otherDM" type="number" name="rollModifiers.other" value="{{rollModifiers.other}}" placeholder="0" onClick="this.select();" style="width: 8ch;"/>
+      </label>
+    </div>
+    <div class="form-group">
+      <label>{{localize "DEEPNIGHT.RollDialog.Mode"}}
+        <select id="rollMode" name="rollMode">
+          {{#select rollMode}}
+            <option value="public">{{localize "DEEPNIGHT.RollMode.public"}}</option>
+            <option value="gm">{{localize "DEEPNIGHT.RollMode.gm"}}</option>
+            <option value="blind">{{localize "DEEPNIGHT.RollMode.blind"}}</option>
+            <option value="self">{{localize "DEEPNIGHT.RollMode.self"}}</option>
+          {{/select}}
+        </select>
+      </label>
+    </div>
+  </fieldset>
+  <fieldset>
+    {{#each ceiModifiers as |ceimod|}}
+      <div class="form-group">
+        <label>{{ceimod.label}}
+          <input id="cei.{{ceimod.id}}" type="checkbox" class="checkbox" name="{{ceimod.id}}" data-dtype="Boolean" />
+        </label>
+      </div>
+    {{/each}}
+  </fieldset>
+</form>

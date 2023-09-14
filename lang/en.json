@@ -14,6 +14,37 @@
     "shipButtonTitle": "Deepnight Revelation console",
     "watchButtonName": "Watch",
     "watchButtonTitle": "One watch passes",
-    "saveButtonTitle": "Save"
-  }
+    "saveButtonTitle": "Save",
+    "RollDialog": {
+      "RollDetails": "Roll Details",
+      "Difficulty": "Difficulty",
+      "Type": "Type",
+      "Mode": "Mode"
+    },
+    "Boon": "Boon",
+    "Bane": "Bane",
+    "Normal": "Normal",
+    "Fatigue": "Fatigue",
+    "RollMode": {
+      "public": "Public Roll",
+      "gm": "Private GM Roll",
+      "blind": "Blind GM Roll",
+      "self": "Self Roll"
+
+    }
+  },
+  "Simple": "Simple",
+  "Easy": "Easy",
+  "Routine": "Routine",
+  "Average": "Average",
+  "Difficult": "Difficult",
+  "VeryDifficult": "Very Difficult",
+  "Formidable": "Formidable",
+  "Impossible": "Impossible",
+  "Not fatigued": "Not fatigued",
+  "Fatigued": "Fatigued",
+  "Highly fatigued": "Highly fatigued",
+  "Dangerously fatigued": "Dangerously fatigued",
+  "Exhausted fatigued": "Exhausted fatigued",
+  "Incapable": "Incapable"
 }

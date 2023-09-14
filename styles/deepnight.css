@@ -76,3 +76,8 @@ div.dnr-buttons {
 .dnr-valueinput {
   width: 60px !important;
 }
+
+.dnr-flagtext {
+  font-size: 0.7rem;
+  font-style: italic;
+}

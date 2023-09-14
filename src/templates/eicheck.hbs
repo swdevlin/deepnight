@@ -1,0 +1,52 @@
+<h3>{{label}}</h3>
+<h4>{{resolution}}</h4>
+<div class="dice-roll">
+  <div class="dice-result">
+    <table>
+      <tbody>
+        <tr><th></th><th>Description</th><th class="centre">DM</th></tr>
+        <tr>
+          <td>Dice</td>
+          <td>{{dice}}</td>
+          <td class="centre">
+            {{#each diceRolled}}{{this}}{{#unless @last}}+{{/unless}}{{/each}}
+          </td>
+        </tr>
+        <tr>
+          <td>Difficulty</td>
+          <td>{{difficulty.label}}</td>
+          <td class="centre">{{difficulty.mod}}</td>
+        </tr>
+        <tr>
+          <td>D/CEI + CEIM</td>
+          <td>{{dei}} + {{ceim}}</td>
+          <td class="centre">{{ceiDM}}</td>
+        </tr>
+        <tr>
+          <td>Fatigue</td>
+          <td>{{fatigue.label}}</td>
+          <td class="centre">{{fatigue.dm}}</td>
+        </tr>
+        {{#each flags as |flag|}}
+          <tr>
+            <td>{{flag.label}}</td>
+            <td></td>
+            <td class="centre">{{flag.dm}}</td>
+          </tr>
+        {{/each}}
+        <tr>
+          <td>Other</td>
+          <td></td>
+          <td class="centre">{{otherDM}}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          <td>{{formula}}</td>
+          <th class="centre">{{total}}</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

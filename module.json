@@ -2,7 +2,8 @@
   "id": "deepnight",
   "title": "Deepnight Revelation Campaign Tracker",
   "description": "A module to keep track the various numbers used in the Deepnight Revelation campaign by Mongoose Publishing.",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "manifestPlusVersion": "0.1.1",
   "authors": [
     {
       "id": "RadioFreeWABA",
@@ -27,5 +28,63 @@
   ],
   "styles": [
     "./styles/deepnight.css"
+  ],
+  "packs": [
+    {
+      "name": "ei-resolution",
+      "label": "D/CEI Resolution",
+      "path": "./packs/rolltables/cei-resolution.db",
+      "module": "deepnight",
+      "type": "RollTable",
+      "entity": "RollTable"
+    },
+    {
+      "name": "ceim-changes",
+      "label": "CEIM Changes",
+      "path": "./packs/rolltables/ceim-changes.db",
+      "module": "deepnight",
+      "type": "RollTable",
+      "entity": "RollTable"
+    },
+    {
+      "name": "mishaps",
+      "label": "Mishaps",
+      "path": "./packs/rolltables/mishaps.db",
+      "module": "deepnight",
+      "type": "RollTable",
+      "entity": "RollTable"
+    },
+    {
+      "name": "incidents",
+      "label": "Incidents",
+      "path": "./packs/rolltables/incidents.db",
+      "module": "deepnight",
+      "type": "RollTable",
+      "entity": "RollTable"
+    },
+    {
+      "name": "opportunities",
+      "label": "Opportunities",
+      "path": "./packs/rolltables/opportunities.db",
+      "module": "deepnight",
+      "type": "RollTable",
+      "entity": "RollTable"
+    },
+    {
+      "name": "crisis-nature",
+      "label": "Crisis: Nature",
+      "path": "./packs/rolltables/crisis-nature.db",
+      "module": "deepnight",
+      "type": "RollTable",
+      "entity": "RollTable"
+    },
+    {
+      "name": "crisis-severity",
+      "label": "Crisis: Severity",
+      "path": "./packs/rolltables/crisis-severity.db",
+      "module": "deepnight",
+      "type": "RollTable",
+      "entity": "RollTable"
+    }
   ]
 }
