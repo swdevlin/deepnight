@@ -182,12 +182,19 @@ export class DeepnightRevelation extends Application {
     };
     const message = await renderTemplate('modules/deepnight/src/templates/eicheck.hbs', data)
 
+    let whisper = [];
+    if (rollMode === 'blind' || rollMode === 'gm')
+      whisper.concat(game.users.filter(u => u.isGM).map(u => u._id));
+    if (rollMode === 'self' || rollMode === 'gm')
+      whisper.push(game.user._id);
+    console.log(whisper);
     let chatData = {
       user: game.userId,
       speaker: ChatMessage.getSpeaker(),
       content: message,
-      whisper: [],
-      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      whisper: whisper,
+      blind: rollMode === 'blind',
+      type: rollMode === 'public' ? CONST.CHAT_MESSAGE_TYPES.ROLL : CONST.CHAT_MESSAGE_TYPES.WHISPER,
       rolls: [roller],
     }
     ChatMessage.create(chatData, {});

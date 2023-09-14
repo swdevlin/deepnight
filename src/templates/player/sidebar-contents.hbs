@@ -26,14 +26,30 @@
       <div class="dnr-panel dnr-ceipanel">
         <div class="dnr-panel-text">
           <p>
-            {{cei}}
+            <input
+              type="number"
+              data-dtype="Number"
+              step="1"
+              id="cei"
+              name="cei"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{cei}}"/>
           </p>
         </div>
       </div>
       <div class="dnr-panel dnr-ceimpanel">
         <div class="dnr-panel-text">
           <p>
-            {{ceim}}
+            <input
+              type="number"
+              data-dtype="Number"
+              step="1"
+              id="ceim"
+              name="ceim"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{ceim}}"/>
           </p>
         </div>
       </div>
@@ -46,14 +62,40 @@
       <div class="dnr-panel dnr-deipanel">
         <div class="dnr-panel-text">
           <p>
-            {{mission.dei}}
+            <input
+              type="number"
+              data-dtype="Number"
+              step="1"
+              id="mission-dei"
+              name="mission-dei"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{mission.dei}}"/>
+          </p>
+          <p>
+            <span
+              class="dei-check"
+              data-tooltip="skill check"
+              data-dei="{{mission.dei}}"
+              data-label="Mission DEI check"
+            >
+              <i class="fa-solid fa-dice" alt="d6"></i>
+            </span>
           </p>
         </div>
       </div>
       <div class="dnr-panel dnr-crewpanel">
         <div class="dnr-panel-text">
           <p>
-            {{mission.crew}}
+            <input
+              type="number"
+              data-dtype="Number"
+              step="1"
+              id="mission-crew"
+              name="mission-crew"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{mission.crew}}"/>
           </p>
         </div>
       </div>
@@ -66,14 +108,40 @@
       <div class="dnr-panel dnr-deipanel">
         <div class="dnr-panel-text">
           <p>
-            {{flight.dei}}
+            <input
+              type="number"
+              id="flight-dei"
+              data-dtype="Number"
+              step="1"
+              name="flight-dei"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{flight.dei}}"/>
+          </p>
+          <p>
+            <span
+              class="dei-check"
+              data-tooltip="skill check"
+              data-dei="{{flight.dei}}"
+              data-label="Flight DEI check"
+            >
+              <i class="fa-solid fa-dice" alt="d6"></i>
+            </span>
           </p>
         </div>
       </div>
       <div class="dnr-panel dnr-crewpanel">
         <div class="dnr-panel-text">
           <p>
-            {{flight.crew}}
+            <input
+              type="number"
+              id="flight-crew"
+              data-dtype="Number"
+              step="1"
+              name="flight-crew"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{flight.crew}}"/>
           </p>
         </div>
       </div>
@@ -86,14 +154,40 @@
       <div class="dnr-panel dnr-deipanel">
         <div class="dnr-panel-text">
           <p>
-            {{operations.dei}}
+            <input
+              type="number"
+              id="operations-dei"
+              data-dtype="Number"
+              step="1"
+              name="operations-dei"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{operations.dei}}"/>
+          </p>
+          <p>
+            <span
+              class="dei-check"
+              data-tooltip="skill check"
+              data-dei="{{operations.dei}}"
+              data-label="Operations DEI check"
+            >
+              <i class="fa-solid fa-dice" alt="d6"></i>
+            </span>
           </p>
         </div>
       </div>
       <div class="dnr-panel dnr-crewpanel">
         <div class="dnr-panel-text">
           <p>
-            {{operations.crew}}
+            <input
+              type="number"
+              id="operations-crew"
+              data-dtype="Number"
+              step="1"
+              name="operations-crew"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{operations.crew}}"/>
           </p>
         </div>
       </div>
@@ -106,14 +200,40 @@
       <div class="dnr-panel dnr-deipanel">
         <div class="dnr-panel-text">
           <p>
-            {{engineering.dei}}
+            <input
+              type="number"
+              id="engineering-dei"
+              data-dtype="Number"
+              step="1"
+              name="engineering-dei"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{engineering.dei}}"/>
+          </p>
+          <p>
+            <span
+              class="dei-check"
+              data-tooltip="skill check"
+              data-dei="{{engineering.dei}}"
+              data-label="Engineering DEI check"
+            >
+              <i class="fa-solid fa-dice" alt="d6"></i>
+            </span>
           </p>
         </div>
       </div>
       <div class="dnr-panel dnr-crewpanel">
         <div class="dnr-panel-text">
           <p>
-            {{engineering.crew}}
+            <input
+              type="number"
+              id="engineering-crew"
+              data-dtype="Number"
+              step="1"
+              name="engineering-crew"
+              placeholder="0"
+              class="form-fields dnr-valueinput"
+              value="{{engineering.crew}}"/>
           </p>
         </div>
       </div>
