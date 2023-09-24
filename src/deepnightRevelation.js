@@ -141,11 +141,10 @@ export class DeepnightRevelation extends Application {
 
   async deiCheckResult(dei, difficulty, rollType, otherDM, rollMode, label, fatigue, flags) {
     let dice = RollTypes[rollType].dice;
-    dice += "+" + otherDM;
-    dice += "+" + ceiTaskDM(dei + this.ceim);
-    dice += "+" + Difficulties[difficulty].mod;
-    dice += "+" + FatigueLevels[fatigue].dm;
-    console.log('deepnight', FatigueLevels[fatigue], fatigue);
+    dice += `+ ${otherDM}`;
+    dice += `+ ${ceiTaskDM(dei + this.ceim)}`;
+    dice += `+ ${Difficulties[difficulty].mod}`;
+    dice += `+ ${FatigueLevels[fatigue].dm}`;
     for (const id of Object.keys(flags))
       dice += `+ ${flags[id]}`
     let roller = new Roll(dice);
@@ -191,7 +190,18 @@ export class DeepnightRevelation extends Application {
     else
       rollMode = CONST.DICE_ROLL_MODES.PUBLIC;
 
-    roller.toMessage({flavor: message},{rollMode: rollMode});
+    await roller.toMessage(
+      {
+        flavor: message,
+        rollMode: rollMode,
+        flags: {
+          "core.canPopout": true,
+        }
+      },
+      {
+        rollMode: rollMode,
+      }
+    );
   }
 
   async deiCheck(evt) {
@@ -262,7 +272,8 @@ export class DeepnightRevelation extends Application {
       this.saveEdits();
     });
     $('.dei-check').on('click', (evt) => {
-      this.deiCheck(evt);
+      if (!evt.target.className.includes('dnr-valueinput') )
+        this.deiCheck(evt);
     });
   }
 
