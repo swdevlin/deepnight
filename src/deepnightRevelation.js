@@ -4,7 +4,6 @@ import {
   ceiTaskDM,
   computeDM,
   Difficulties,
-  effect,
   FatigueLevels,
   RollTypes
 } from "./helpers.js";
@@ -13,18 +12,37 @@ export class DeepnightRevelation extends Application {
   static ID = 'deepnight';
   constructor(src, options = {}) {
     super(src, options);
-    this.year = 1105;
-    this.day = 17;
-    this.watch = 1;
-    this.daysOnMission = 0;
-    this.morale = 0;
-    this.supplies = 200000;
-    this.rareMaterials = 0;
-    this.rareBiologicals = 0;
-    this.exoticMaterials = 0;
-    this.cfi = 0;
-    this.cei = 7;
-    this.ceim = 0;
+    this.status = {
+      year: 1105,
+      day: 17,
+      watch: 1,
+      daysOnMission: 0,
+      morale: 0,
+      supplies: 200000,
+      rareMaterials: 0,
+      rareBiologicals: 0,
+      exoticMaterials: 0,
+      fatigue: 'not',
+      cfi: 0,
+      cei: 7,
+      ceim: 0,
+      flight: {
+        dei: 0,
+        crew: 0,
+      },
+      mission: {
+        dei: 0,
+        crew: 0,
+      },
+      operations: {
+        dei: 0,
+        crew: 0,
+      },
+      engineering: {
+        dei: 0,
+        crew: 0,
+      },
+    };
     this.history = [];
     this.command = {
       missionCommander: null,
@@ -35,52 +53,68 @@ export class DeepnightRevelation extends Application {
       chiefFlightOfficer: null,
       chiefEngineeringOfficer: null,
     }
-    this.flight = {
-      dei: 0,
-      crew: 0,
-    };
-
-    this.mission = {
-      dei: 0,
-      crew: 0,
-    };
-
-    this.operations = {
-      dei: 0,
-      crew: 0,
-    };
-
-    this.engineering = {
-      dei: 0,
-      crew: 0,
-    };
 
     /** @type {Event} */
     this.eventListener;
   }
 
-  loadFromSettings() {
-    this.year = game.settings.get('deepnight', 'year');
-    this.day = game.settings.get('deepnight', 'day');
-    this.watch = game.settings.get('deepnight', 'watch');
-    this.daysOnMission = game.settings.get('deepnight', 'daysOnMission');
-    this.morale = game.settings.get('deepnight', 'morale');
-    this.supplies = game.settings.get('deepnight', 'supplies');
-    this.rareMaterials = game.settings.get('deepnight', 'rareMaterials');
-    this.rareBiologicals = game.settings.get('deepnight', 'rareBiologicals');
-    this.exoticMaterials = game.settings.get('deepnight', 'exoticMaterials');
-    this.cfi = game.settings.get('deepnight', 'cfi');
-    this.cei = game.settings.get('deepnight', 'cei');
-    this.ceim = game.settings.get('deepnight', 'ceim');
-    this.flight = game.settings.get('deepnight', 'flight');
-    this.mission = game.settings.get('deepnight', 'mission');
-    this.operations = game.settings.get('deepnight', 'operations');
-    this.engineering = game.settings.get('deepnight', 'engineering');
-
+  async loadFromSettings() {
+    this.status = await game.settings.get('deepnight', 'status');
     this.updatePanel();
   }
 
-  saveHistory() {
+  get year() { return this.status.year; }
+  set year(y) { this.status.year = y; }
+
+  get day() { return this.status.day; }
+  set day(d) { this.status.day = d; }
+
+  get watch() { return this.status.watch; }
+  set watch(w) { this.status.watch = w; }
+
+  get daysOnMission() { return this.status.daysOnMission; }
+  set daysOnMission(d) { this.status.daysOnMission = d; }
+
+  get morale() { return this.status.morale; }
+  set morale(m) { this.status.morale = m; }
+
+  get supplies() { return this.status.supplies; }
+  set supplies(s) { this.status.supplies = s; }
+
+  get rareMaterials() { return this.status.rareMaterials; }
+  set rareMaterials(r) { this.status.rareMaterials = r; }
+
+  get rareBiologicals() { return this.status.rareBiologicals; }
+  set rareBiologicals(r) { this.status.rareBiologicals = r; }
+
+  get exoticMaterials() { return this.status.exoticMaterials; }
+  set exoticMaterials(e) { this.status.exoticMaterials = e; }
+
+  get cfi() { return this.status.cfi; }
+  set cfi(c) { this.status.cfi = c; }
+
+  get cei() { return this.status.cei; }
+  set cei(c) { this.status.cei = c; }
+
+  get ceim() { return this.status.ceim; }
+  set ceim(c) { this.status.ceim = c; }
+
+  get flight() { return this.status.flight; }
+  set flight(f) { this.status.flight = f; }
+
+  get mission() { return this.status.mission; }
+  set mission(m) { this.status.mission = m; }
+
+  get operations() { return this.status.operations; }
+  set operations(o) { this.status.operations = o; }
+
+  get engineering() { return this.status.engineering; }
+  set engineering(e) { this.status.engineering = e; }
+
+  get fatigue() { return this.status.fatigue; }
+  set fatigue(f) { this.status.fatigue = f; }
+
+  async saveHistory() {
     this.history.push([
       this.year,
       this.day,
@@ -102,41 +136,14 @@ export class DeepnightRevelation extends Application {
       this.operations.crew,
       this.engineering.dei,
       this.engineering.crew,
+      this.fatigue,
     ]);
-    game.settings.set('deepnight', 'history', this.history);
+    await game.settings.set('deepnight', 'history', this.history);
   }
 
-  saveDailySettings() {
-    game.settings.set('deepnight', {
-      'year': this.year,
-      'day': this.day,
-      'watch': this.watch,
-      'daysOnMission': this.daysOnMission,
-      'supplies': this.supplies,
-    });
-    this.saveHistory();
-  }
-
-  saveSettings() {
-    game.settings.set('deepnight', {
-      'year': this.year,
-      'day': this.day,
-      'watch': this.watch,
-      'daysOnMission': this.daysOnMission,
-      'morale': this.morale,
-      'supplies': this.supplies,
-      'rareMaterials': this.rareMaterials,
-      'rareBiologicals': this.rareBiologicals,
-      'exoticMaterials': this.exoticMaterials,
-      'cfi': this.cfi,
-      'cei': this.cei,
-      'ceim': this.ceim,
-      'flight': this.flight,
-      'mission': this.mission,
-      'operations': this.operations,
-      'engineering': this.engineering,
-    });
-    this.saveHistory();
+  async saveSettings() {
+    await game.settings.set('deepnight', 'status', this.status);
+    await this.saveHistory();
   }
 
   async deiCheckResult(dei, difficulty, rollType, otherDM, rollMode, label, fatigue, flags) {
@@ -216,7 +223,56 @@ export class DeepnightRevelation extends Application {
       rollMode: "public",
       ceiModifiers: CEIRollModifiers,
       fatigueLevels: FatigueLevels,
-      fatigue: 'not',
+      fatigue: this.fatigue,
+    };
+    const dialogContent = await renderTemplate('modules/deepnight/src/templates/eiCheckDialog.hbs', data)
+
+    const dialogOptions = {
+      title: label,
+      content: dialogContent,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-solid fa-dice"></i>',
+          label: "Roll",
+          callback: () => {
+            const difficulty = document.getElementById("difficulty").value;
+            let otherDM = parseInt(document.getElementById("otherDM").value, 10);
+            if (isNaN(otherDM))
+              otherDM = 0;
+            const rollType = document.getElementById("rollType").value;
+            const rollMode = document.getElementById("rollMode").value;
+            const fatigue = document.getElementById("fatigue").value;
+            const flags = {};
+            for (const key of CEIRollModifiers)
+              if (document.getElementById(`cei.${key.id}`).checked)
+                flags[key.id] = key.dm;
+            this.deiCheckResult(dei, difficulty, rollType, otherDM, rollMode, label, fatigue, flags);
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Cancel",
+        },
+      },
+      default: "ok",
+    };
+
+    new Dialog(dialogOptions).render(true);
+  }
+
+  async ceiCheck(evt) {
+    const label = evt.currentTarget.dataset.label;
+    const dei = parseInt(evt.currentTarget.dataset.cei, 10);
+
+    const data = {
+      difficulties: Difficulties,
+      dei: dei,
+      difficulty: "Average",
+      rollType: "normal",
+      rollMode: "public",
+      ceiModifiers: CEIRollModifiers,
+      fatigueLevels: FatigueLevels,
+      fatigue: this.fatigue,
     };
     const dialogContent = await renderTemplate('modules/deepnight/src/templates/eiCheckDialog.hbs', data)
 
@@ -256,8 +312,7 @@ export class DeepnightRevelation extends Application {
   async updatePanel() {
     const section = document.querySelector('section#deepnight');
     const role = game.user.isGM ? 'referee' : 'player';
-    const status = await renderTemplate(`modules/deepnight/src/templates/${role}/sidebar-contents.hbs`, this.templateData());
-    section.innerHTML = status;
+    section.innerHTML = await renderTemplate(`modules/deepnight/src/templates/${role}/sidebar-contents.hbs`, this.templateData());
 
     $('#dnr-jump').on('click', () => {
       this.jump();
@@ -275,6 +330,10 @@ export class DeepnightRevelation extends Application {
       if (!evt.target.className.includes('dnr-valueinput') )
         this.deiCheck(evt);
     });
+    $('.cei-check').on('click', (evt) => {
+      if (!evt.target.className.includes('dnr-valueinput') )
+        this.ceiCheck(evt);
+    });
   }
 
   saveEdits() {
@@ -288,6 +347,8 @@ export class DeepnightRevelation extends Application {
     this.engineering.crew = parseInt($('input#engineering-crew').val(), 10);
     this.flight.dei = parseInt($('input#flight-dei').val(), 10);
     this.flight.crew = parseInt($('input#flight-crew').val(), 10);
+    this.morale = parseInt($('input#morale').val(), 10);
+    this.fatigue = $('#dnr-fatigue').val();
     this.saveSettings();
   }
 
@@ -308,13 +369,14 @@ export class DeepnightRevelation extends Application {
       flight: {...this.flight},
       operations: {...this.operations},
       engineering: {...this.engineering},
+      fatigue: this.fatigue,
+      fatigueLevels: FatigueLevels,
     };
 
     data.mission.deiDM = computeDM(data.mission.dei);
     data.flight.deiDM = computeDM(data.flight.dei);
     data.operations.deiDM = computeDM(data.operations.dei);
     data.engineering.deiDM = computeDM(data.engineering.dei);
-
     return data;
   }
 
@@ -357,19 +419,19 @@ export class DeepnightRevelation extends Application {
     let watches = roller.total;
     for (let i=0; i < watches; i++)
       this.incWatch();
-    this.postTime();
-    this.saveDailySettings();
+    await this.postTime();
+    await this.saveSettings();
   }
 
-  dayPasses() {
+  async dayPasses() {
     this.incDay();
-    this.saveDailySettings();
-    this.postTime();
+    await this.saveSettings();
+    await this.postTime();
   }
 
-  watchPasses() {
+  async watchPasses() {
     this.incWatch();
-    this.saveDailySettings();
-    this.postTime();
+    await this.saveSettings();
+    await this.postTime();
   }
 }

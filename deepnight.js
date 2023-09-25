@@ -40,10 +40,13 @@ Hooks.on("renderSidebar", async (app, html) => {
 });
 
 Hooks.on("changeSidebarTab", () => {
+  console.log('deepnight|changeSidebarTab');
   window.deepnightRevelation.updatePanel()
 });
 
 Hooks.on('updateSetting', (setting, value, options) => {
+  console.log('deepnight|updateSettings', setting);
   if (setting.key.startsWith('deepnight.'))
-    window.deepnightRevelation.loadFromSettings();
+    if (!setting.key.includes('history'))
+      window.deepnightRevelation.loadFromSettings();
 });

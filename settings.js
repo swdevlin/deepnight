@@ -1,147 +1,32 @@
-Hooks.once("init", () => {
-  console.log('deepnight|settings')
-  game.settings.register("deepnight", "year", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 1105,
-  });
-
-  game.settings.register("deepnight", "day", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 17,
-  });
-
-  game.settings.register("deepnight", "watch", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 1,
-  });
-
-  game.settings.register("deepnight", "daysOnMission", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 0,
-  });
-
-  game.settings.register("deepnight", "morale", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 0,
-  });
-
-  game.settings.register("deepnight", "supplies", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 200000,
-  });
-
-  game.settings.register("deepnight", "rareMaterials", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 0,
-  });
-
-  game.settings.register("deepnight", "rareBiologicals", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 0,
-  });
-
-  game.settings.register("deepnight", "exoticMaterials", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 0,
-  });
-
-  game.settings.register("deepnight", "cfi", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 0,
-  });
-
-  game.settings.register("deepnight", "cei", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 7,
-  });
-
-  game.settings.register("deepnight", "ceim", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: 0,
-  });
-
-  game.settings.register("deepnight", "flight", {
+Hooks.once("init", async () => {
+  console.log('deepnight|settings started');
+  await game.settings.register("deepnight", 'status', {
     scope: "world",
     config: false,
     type: Object,
     restricted: true,
     default: {
-      dei: 7,
-      crew: 57,
-    },
+      year: 1105,
+      day: 1,
+      watch: 1,
+      daysOnMission: 0,
+      morale: 0,
+      supplies: 200000,
+      rareMaterials: 0,
+      rareBiologicals: 0,
+      exoticMaterials: 0,
+      cfi: 0,
+      cei: 7,
+      ceim: 0,
+      fatigue: 'not',
+      flight: { dei: 7, crew: 57},
+      mission: { dei: 7, crew: 92},
+      operations: { dei: 7, crew: 132},
+      engineering: { dei: 7, crew: 195},
+    }
   });
 
-  game.settings.register("deepnight", "mission", {
-    scope: "world",
-    config: false,
-    type: Object,
-    restricted: true,
-    default: {
-      dei: 7,
-      crew: 92,
-    },
-  });
-
-  game.settings.register("deepnight", "operations", {
-    scope: "world",
-    config: false,
-    type: Object,
-    restricted: true,
-    default: {
-      dei: 7,
-      crew: 132,
-    },
-  });
-
-  game.settings.register("deepnight", "engineering", {
-    scope: "world",
-    config: false,
-    type: Object,
-    restricted: true,
-    default: {
-      dei: 7,
-      crew: 195,
-    },
-    onchange: () => window.deepnightRevelation.loadFromSettings(),
-  });
-
-  game.settings.register("deepnight", "history", {
+  await game.settings.register("deepnight", "history", {
     scope: "world",
     config: false,
     type: Array,
@@ -149,12 +34,13 @@ Hooks.once("init", () => {
     default: []
   });
 
-  game.settings.register("deepnight", "rollback", {
+  await game.settings.register("deepnight", "rollback", {
     scope: "world",
     config: false,
     type: Number,
     restricted: true,
     default: -1
   });
+  console.log('deepnight|settings set');
 
 });
