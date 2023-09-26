@@ -349,6 +349,10 @@ export class DeepnightRevelation extends Application {
     this.flight.crew = parseInt($('input#flight-crew').val(), 10);
     this.morale = parseInt($('input#morale').val(), 10);
     this.fatigue = $('#dnr-fatigue').val();
+    this.supplies = parseInt($('#supplies').val(), 10);
+    this.exoticMaterials = parseInt($('#exoticMaterials').val(), 10);
+    this.rareMaterials = parseInt($('#rareMaterials').val(), 10);
+    this.rareBiologicals = parseInt($('#rareBiologicals').val(), 10);
     this.saveSettings();
   }
 
@@ -361,10 +365,10 @@ export class DeepnightRevelation extends Application {
       morale: this.morale,
       cei: this.cei,
       ceim: this.ceim,
-      supplies: this.supplies.toLocaleString(),
-      rareMaterials: this.rareMaterials.toLocaleString(),
-      exoticMaterials: this.exoticMaterials.toLocaleString(),
-      rareBiologicals: this.rareBiologicals.toLocaleString(),
+      supplies: game.user.isGM ? this.supplies : this.supplies.toLocaleString(),
+      rareMaterials: game.user.isGM ? this.rareMaterials : this.rareMaterials.toLocaleString(),
+      exoticMaterials: game.user.isGM ? this.exoticMaterials : this.exoticMaterials.toLocaleString(),
+      rareBiologicals: game.user.isGM ? this.rareBiologicals : this.rareBiologicals.toLocaleString(),
       mission: {...this.mission },
       flight: {...this.flight},
       operations: {...this.operations},
@@ -391,11 +395,14 @@ export class DeepnightRevelation extends Application {
   }
 
   incWatch() {
+    let dayChanged = false;
     if (this.watch === 3) {
       this.watch = 1;
       this.incDay();
+      dayChanged = true;
     } else
       this.watch++;
+    return dayChanged;
   }
 
   async postTime() {
@@ -430,8 +437,9 @@ export class DeepnightRevelation extends Application {
   }
 
   async watchPasses() {
-    this.incWatch();
+    const dayChanged = this.incWatch();
     await this.saveSettings();
-    await this.postTime();
+    if (dayChanged)
+      await this.postTime();
   }
 }

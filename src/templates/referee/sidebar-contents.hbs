@@ -1,18 +1,52 @@
 <header class="directory-header">
   <div class="flexrow">
-    <div><i class="fa-light fa-calendar-days"></i> <b>{{year}}.{{day}}</b></div>
-    <div>{{localize "DEEPNIGHT.daysOnMission"}}: <b>{{daysOnMission}}</b></div>
+    <div>
+      <span class="dnr-spacer"><i class="fa-light fa-calendar-days"></i></span>
+      <b>{{year}}.{{day}}</b>
+    </div>
+    <div>
+      <span class="dnr-spacer">{{localize "DEEPNIGHT.daysOnMission"}}:</span>
+      <b>{{daysOnMission}}</b>
+    </div>
   </div>
 </header>
 
 <header class="directory-header">
   <div class="flexrow">
-    <div title="supplies"><i class="fa-light fa-crate-apple"></i> <b>{{supplies}}</b></div>
-    <div title="exotic materials"><i class="fa-light fa-sparkles"></i> <b>{{exoticMaterials}}</b></div>
+    <div title="Supplies">
+      <label for="supplies">
+        <span class="dnr-spacer"><i class="fa-light fa-crate-apple"></i></span>
+      </label>
+      <input
+        type="number"
+        data-dtype="Number"
+        step="1"
+        id="supplies"
+        name="supplies"
+        placeholder="0"
+        class="form-fields dnr-valueinput"
+        value="{{supplies}}"/>
+    </div>
+    <div title="exotic materials">
+      <label for="exoticMaterials">
+        <span class="dnr-spacer"><i class="fa-light fa-sparkles"></i></span>
+      </label>
+      <input
+        type="number"
+        data-dtype="Number"
+        step="1"
+        id="exoticMaterials"
+        name="exoticMaterials"
+        placeholder="0"
+        class="form-fields dnr-valueinput"
+        value="{{exoticMaterials}}"/>
+    </div>
   </div>
   <div class="flexrow">
     <div title="rare materials">
-      <i class="fa-light fa-comet"></i>
+      <label for="rareMaterials">
+        <span class="dnr-spacer"><i class="fa-light fa-comet"></i></span>
+      </label>
       <input
         type="number"
         data-dtype="Number"
@@ -23,13 +57,34 @@
         class="form-fields dnr-valueinput"
         value="{{rareMaterials}}"/>
     </div>
-    <div title="rare biologicals"><i class="fa-light fa-dna"></i> <b>{{rareBiologicals}}</b></div>
+    <div title="rare biologicals">
+      <label for="rareBiologicals">
+        <span class="dnr-spacer"><i class="fa-light fa-dna"></i></span>
+      </label>
+      <input
+        type="number"
+        data-dtype="Number"
+        step="1"
+        id="rareBiologicals"
+        name="rareBiologicals"
+        placeholder="0"
+        class="form-fields dnr-valueinput"
+        value="{{rareBiologicals}}"/>
+    </div>
   </div>
 </header>
 
 <header class="directory-header">
   <div class="flexrow">
-    <div title="morale"><i class="fa-light fa-face-smile"></i>Morale:
+    <div title="morale">
+      <label for="morale">
+        <span class="dnr-spacer">
+          <span class="dnr-spacer">
+            <i class="fa-light fa-face-smile"></i>
+          </span>
+          Morale:
+        </span>
+      </label>
       <input
         type="number"
         data-dtype="Number"
@@ -42,7 +97,15 @@
       </div>
   </div>
   <div class="flexrow">
-    <div title="fatigue"><i class="fa-regular fa-face-weary"></i>Fatigue:
+    <div title="fatigue">
+      <label for="fatigue">
+        <span class="dnr-spacer">
+          <span class="dnr-spacer">
+            <i class="fa-regular fa-face-weary"></i>
+          </span>
+          Fatigue:
+        </span>
+      </label>
       <select id="dnr-fatigue" name="fatigue">
         {{#select fatigue}}
           {{#each fatigueLevels}}
@@ -61,6 +124,7 @@
       <div class="dnr-panel dnr-ceipanel">
         <div class="dnr-panel-text">
           <p>
+            <label for="cei"></label>
             <input
               type="number"
               data-dtype="Number"
@@ -76,6 +140,7 @@
       <div class="dnr-panel dnr-ceimpanel">
         <div class="dnr-panel-text">
           <p>
+            <label for="ceim"></label>
             <input
               type="number"
               data-dtype="Number"
@@ -101,6 +166,7 @@
       >
         <div class="dnr-panel-text">
           <p>
+            <label for="mission-dei"></label>
             <input
               type="number"
               data-dtype="Number"
@@ -119,6 +185,7 @@
       <div class="dnr-panel dnr-crewpanel">
         <div class="dnr-panel-text">
           <p>
+            <label for="mission-crew"></label>
             <input
               type="number"
               data-dtype="Number"
@@ -145,6 +212,7 @@
       >
         <div class="dnr-panel-text">
           <p>
+            <label for="flight-dei"></label>
             <input
               type="number"
               id="flight-dei"
@@ -163,6 +231,7 @@
       <div class="dnr-panel dnr-crewpanel">
         <div class="dnr-panel-text">
           <p>
+            <label for="flight-crew"></label>
             <input
               type="number"
               id="flight-crew"
@@ -189,6 +258,7 @@
       >
         <div class="dnr-panel-text">
           <p>
+            <label for="operations-dei"></label>
             <input
               type="number"
               id="operations-dei"
@@ -207,6 +277,7 @@
       <div class="dnr-panel dnr-crewpanel">
         <div class="dnr-panel-text">
           <p>
+            <label for="operations-crew"></label>
             <input
               type="number"
               id="operations-crew"
@@ -233,6 +304,7 @@
       >
         <div class="dnr-panel-text">
           <p>
+            <label for="engineering-dei"></label>
             <input
               type="number"
               id="engineering-dei"
@@ -251,6 +323,7 @@
       <div class="dnr-panel dnr-crewpanel">
         <div class="dnr-panel-text">
           <p>
+            <label for="engineering-crew"></label>
             <input
               type="number"
               id="engineering-crew"

@@ -81,3 +81,7 @@ div.dnr-buttons {
   font-size: 0.7rem;
   font-style: italic;
 }
+
+.dnr-spacer {
+  padding-right: 4px;
+}
