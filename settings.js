@@ -1,5 +1,4 @@
 Hooks.once("init", async () => {
-  console.log('deepnight|settings started');
   await game.settings.register("deepnight", 'status', {
     scope: "world",
     config: false,
@@ -26,6 +25,16 @@ Hooks.once("init", async () => {
     }
   });
 
+  await game.settings.register("deepnight", "refuelTime", {
+    name: game.i18n.localize('DEEPNIGHT.refuelSettingName'),
+    hint: game.i18n.localize('DEEPNIGHT.refuelSettingHint'),
+    scope: "world",
+    config: true,
+    type: String,
+    restricted: true,
+    default: '2d 1w'
+  });
+
   await game.settings.register("deepnight", "history", {
     scope: "world",
     config: false,
@@ -33,14 +42,5 @@ Hooks.once("init", async () => {
     restricted: true,
     default: []
   });
-
-  await game.settings.register("deepnight", "rollback", {
-    scope: "world",
-    config: false,
-    type: Number,
-    restricted: true,
-    default: -1
-  });
-  console.log('deepnight|settings set');
 
 });

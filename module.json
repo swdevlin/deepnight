@@ -2,8 +2,8 @@
   "id": "deepnight",
   "title": "Deepnight Revelation Campaign Tracker",
   "description": "A module to keep track the various numbers used in the Deepnight Revelation campaign by Mongoose Publishing.",
-  "version": "0.1.3",
-  "manifestPlusVersion": "0.1.3",
+  "version": "0.3.0",
+  "manifestPlusVersion": "0.3.0",
   "authors": [
     {
       "id": "RadioFreeWABA",
@@ -85,6 +85,108 @@
       "module": "deepnight",
       "type": "RollTable",
       "entity": "RollTable"
+    },
+    {
+      "name": "dr-smallcraft",
+      "label": "Small Craft",
+      "path": "packs/small-craft",
+      "type": "Actor",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "twodsix",
+      "flags": {}
+    },
+    {
+      "name": "dr-ships",
+      "label": "Ships",
+      "path": "packs/ships",
+      "type": "Actor",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "twodsix",
+      "flags": {}
+    },
+    {
+      "name": "dr-vehicles",
+      "label": "Vehicles",
+      "path": "packs/vehicles",
+      "type": "Actor",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "twodsix",
+      "flags": {}
+    },
+    {
+      "name": "dr-armour",
+      "label": "Armour",
+      "path": "packs/armor",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "twodsix",
+      "flags": {}
+    },
+    {
+      "name": "dr-weapons",
+      "label": "Weapons",
+      "path": "packs/weapons",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "twodsix",
+      "flags": {}
+    },
+    {
+      "name": "dr-items",
+      "label": "Items",
+      "path": "packs/items",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "twodsix",
+      "flags": {}
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Deepnight Revelation",
+      "sorting": "m",
+      "packs": [
+        "dr-vehicles",
+        "dr-ships",
+        "dr-smallcraft",
+        "dr-weapons",
+        "dr-armour",
+        "dr-items"
+      ],
+      "folders": [
+        {
+          "name": "Roll tables",
+          "sorting": "m",
+          "packs": [
+            "ei-resolution",
+            "ceim-changes",
+            "mishaps",
+            "incidents",
+            "opportunities",
+            "crisis-nature",
+            "crisis-severity",
+            "a5e-paragon-gifts"
+          ]
+        }
+      ]
     }
   ]
 }

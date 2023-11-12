@@ -317,15 +317,23 @@ export class DeepnightRevelation extends Application {
     $('#dnr-jump').on('click', () => {
       this.jump();
     });
+
+    $('#dnr-refuel').on('click', () => {
+      this.refuel();
+    });
+
     $('#dnr-day').on('click', () => {
       this.dayPasses();
     });
+
     $('#dnr-watch').on('click', () => {
       this.watchPasses();
     });
+
     $('#dnr-save').on('click', () => {
       this.saveEdits();
     });
+
     $('.dei-check').on('click', (evt) => {
       if (!evt.target.className.includes('dnr-valueinput') )
         this.deiCheck(evt);
@@ -405,8 +413,10 @@ export class DeepnightRevelation extends Application {
     return dayChanged;
   }
 
-  async postTime() {
-    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', this.templateData())
+  async postTime(msg) {
+    const data = this.templateData();
+    data.message = msg;
+    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
 
     let chatData = {
       user: game.userId,
@@ -426,8 +436,52 @@ export class DeepnightRevelation extends Application {
     let watches = roller.total;
     for (let i=0; i < watches; i++)
       this.incWatch();
-    await this.postTime();
+    await this.postTime('Jump completed.');
     await this.saveSettings();
+  }
+
+  fuelTime = () => {
+    let days = 0;
+    let watches = 0;
+
+    const parts = game.settings.get('deepnight', 'refuelTime').split(' ');
+
+    parts.forEach((part) => {
+      const number = parseInt(part);
+      const unit = part.slice(-1).toLowerCase(); // Convert unit to lowercase
+
+      if (unit === 'd') {
+        days += number;
+      } else if (unit === 'w') {
+        watches += number;
+      }
+    });
+
+    return { days, watches };
+  };
+
+  async refuel() {
+    // this.year = 1105;
+    // this.day = 1 ;
+    // this.watch = 1 ;
+    // this.daysOnMission = 0 ;
+    // this.morale = 0 ;
+    // this.supplies = 200000 ;
+    // this.rareMaterials = 0 ;
+    // this.rareBiologicals = 0 ;
+    // this.exoticMaterials = 0 ;
+    // this.cfi = 0 ;
+    // this.fatigue = 'not';
+    // await this.saveSettings();
+    // await this.postTime('Reset');
+
+    const time = this.fuelTime();
+    for (let i=0; i<time.days; i++);
+      this.incDay();
+    for (let i=0; i<time.watches; i++);
+      this.incWatch();
+    await this.saveSettings();
+    await this.postTime('Deepnight Revelation has been refueled');
   }
 
   async dayPasses() {

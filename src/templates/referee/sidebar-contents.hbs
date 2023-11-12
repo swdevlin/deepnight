@@ -121,7 +121,11 @@
 <div class="dnr-panels">
   <div class="flexrow">
     <div>
-      <div class="dnr-panel dnr-ceipanel">
+      <div class="dnr-panel dnr-ceipanel dei-check"
+        data-tooltip="skill check"
+        data-dei="{{cei}}"
+        data-label="CEI check"
+      >
         <div class="dnr-panel-text">
           <p>
             <label for="cei"></label>
@@ -134,6 +138,9 @@
               placeholder="0"
               class="form-fields dnr-valueinput"
               value="{{cei}}"/>
+          </p>
+          <p>
+            <i class="fa-solid fa-dice"></i>
           </p>
         </div>
       </div>
@@ -348,5 +355,6 @@
     <button id="dnr-day"><i class="fa-regular fa-calendar-day"></i> {{localize "DEEPNIGHT.dayButtonTitle"}}</button>
     <button id="dnr-watch"><i class="fa-regular fa-watch"></i> {{localize "DEEPNIGHT.watchButtonTitle"}}</button>
     <button id="dnr-jump"><i class="fa-regular fa-calendar-week"></i> {{localize "DEEPNIGHT.jumpButtonTitle"}}</button>
+    <button id="dnr-refuel"><i class="fa-regular fa-gas-pump"></i> {{localize "DEEPNIGHT.refuelButtonTitle"}}</button>
   </div>
 </header>
