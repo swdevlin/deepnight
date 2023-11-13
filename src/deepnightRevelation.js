@@ -322,6 +322,10 @@ export class DeepnightRevelation extends Application {
       this.refuel();
     });
 
+    $('#dnr-reset').on('click', () => {
+      this.reset();
+    });
+
     $('#dnr-day').on('click', () => {
       this.dayPasses();
     });
@@ -461,20 +465,6 @@ export class DeepnightRevelation extends Application {
   };
 
   async refuel() {
-    // this.year = 1105;
-    // this.day = 1 ;
-    // this.watch = 1 ;
-    // this.daysOnMission = 0 ;
-    // this.morale = 0 ;
-    // this.supplies = 200000 ;
-    // this.rareMaterials = 0 ;
-    // this.rareBiologicals = 0 ;
-    // this.exoticMaterials = 0 ;
-    // this.cfi = 0 ;
-    // this.fatigue = 'not';
-    // await this.saveSettings();
-    // await this.postTime('Reset');
-
     const time = this.fuelTime();
     for (let i=0; i<time.days; i++);
       this.incDay();
@@ -482,6 +472,22 @@ export class DeepnightRevelation extends Application {
       this.incWatch();
     await this.saveSettings();
     await this.postTime('Deepnight Revelation has been refueled');
+  }
+
+  async reset() {
+    this.year = 1105;
+    this.day = 1 ;
+    this.watch = 1 ;
+    this.daysOnMission = 0 ;
+    this.morale = 0 ;
+    this.supplies = 200000 ;
+    this.rareMaterials = 0 ;
+    this.rareBiologicals = 0 ;
+    this.exoticMaterials = 0 ;
+    this.cfi = 0 ;
+    this.fatigue = 'not';
+    await this.saveSettings();
+    await this.postTime('Reset');
   }
 
   async dayPasses() {
