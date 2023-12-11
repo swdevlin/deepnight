@@ -31,10 +31,23 @@
       "gm": "Private GM Roll",
       "blind": "Blind GM Roll",
       "self": "Self Roll"
-
     },
     "refuelSettingName": "Time to refuel",
-    "refuelSettingHint": "The number of days and watches to refuel. Example: 2d 1w means two days, one watch to refuel."
+    "refuelSettingHint": "The number of days and watches to refuel. Example: 2d 1w means two days, one watch to refuel.",
+    "Settings": {
+      "suppliesPerDayName": "Supply units per day",
+      "suppliesPerDayHint": "The number of supply units used up per day.",
+      "cfiIntervalName": "CFI Interval",
+      "cfiIntervalHint": "The number of days until CFI increases by 1",
+      "ceimIntervalName": "CEIM Interval",
+      "ceimIntervalHint": "The number of days until a CEIM change is performed",
+      "deiTrainingName": "DEI Training",
+      "deiTrainingHint": "The number of days it takes to do divisional training",
+      "ceiIntervalName": "CEI Training",
+      "ceiIntervalHint": "The number of days until crew training can be performed",
+      "ceiTrainingName": "CEI Training",
+      "ceiTrainingHint": "The number of days it takes to do crew training"
+    }
   },
   "Simple": "Simple",
   "Easy": "Easy",

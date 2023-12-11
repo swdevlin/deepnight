@@ -114,6 +114,15 @@ export class DeepnightRevelation extends Application {
   get fatigue() { return this.status.fatigue; }
   set fatigue(f) { this.status.fatigue = f; }
 
+  get ceiInterval() { return this.status.ceiInterval; }
+  set ceiInterval(i) { this.status.ceiInterval = i; }
+
+  get ceimInterval() { return this.status.ceimInterval; }
+  set ceimInterval(i) { this.status.ceimInterval = i; }
+
+  get cfiInterval() { return this.status.cfiInterval; }
+  set cfiInterval(i) { this.status.cfiInterval = i; }
+
   async saveHistory() {
     this.history.push([
       this.year,
@@ -137,6 +146,9 @@ export class DeepnightRevelation extends Application {
       this.engineering.dei,
       this.engineering.crew,
       this.fatigue,
+      this.ceiInterval,
+      this.ceimInterval,
+      this.cfiInterval,
     ]);
     await game.settings.set('deepnight', 'history', this.history);
   }
@@ -376,6 +388,7 @@ export class DeepnightRevelation extends Application {
       daysOnMission: this.daysOnMission,
       morale: this.morale,
       cei: this.cei,
+      cfi: this.cfi,
       ceim: this.ceim,
       supplies: game.user.isGM ? this.supplies : this.supplies.toLocaleString(),
       rareMaterials: game.user.isGM ? this.rareMaterials : this.rareMaterials.toLocaleString(),
@@ -403,7 +416,7 @@ export class DeepnightRevelation extends Application {
     } else
       this.day++;
     this.daysOnMission++;
-    this.supplies -= 1000;
+    this.supplies -= game.settings.get('deepnight', 'suppliesPerDay');
   }
 
   incWatch() {
