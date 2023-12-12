@@ -30,60 +30,72 @@
     <header class="directory-header dnr-header">Resources</header>
     <div class="flexrow action-buttons">
       <div title="Supplies">
-        <label for="supplies">
-          <div></span>Supplies</div>
-        </label>
-        <span class="dnr-spacer"><i class="fa-light fa-crate-apple"></i></span><input
-        type="number"
-        data-dtype="Number"
-        step="1"
-        id="supplies"
-        name="supplies"
-        placeholder="0"
-        class="form-fields dnr-valueinput"
-        value="{{supplies}}"/>
+        <div>
+          <label for="supplies">
+            Supplies
+          </label>
+        </div>
+        <span class="dnr-spacer"><i class="fa-light fa-crate-apple"></i></span>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="supplies"
+          name="supplies"
+          placeholder="0"
+          class="form-fields dnr-valueinput"
+          value="{{supplies}}"
+        />
       </div>
       <div title="exotic materials">
-        <label for="exoticMaterials">
-          <div>Exotic Materials</div>
-        </label>
-        <span class="dnr-spacer"><i class="fa-light fa-sparkles"></i></span><input
-        type="number"
-        data-dtype="Number"
-        step="1"
-        id="exoticMaterials"
-        name="exoticMaterials"
-        placeholder="0"
-        class="form-fields dnr-valueinput"
-        value="{{exoticMaterials}}"/>
+        <div>
+          <label for="exoticMaterials">
+            Exotic Materials
+          </label>
+        </div>
+        <span class="dnr-spacer"><i class="fa-light fa-sparkles"></i></span>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="exoticMaterials"
+          name="exoticMaterials"
+          placeholder="0"
+          class="form-fields dnr-valueinput"
+          value="{{exoticMaterials}}"
+        />
       </div>
       <div title="rare materials">
-        <label for="rareMaterials">
-          <div>Rare Materials</div>
-        </label>
-        <span class="dnr-spacer"><i class="fa-light fa-comet"></i></span><input
-        type="number"
-        data-dtype="Number"
-        step="1"
-        id="rareMaterials"
-        name="rareMaterials"
-        placeholder="0"
-        class="form-fields dnr-valueinput"
-        value="{{rareMaterials}}"/>
+        <div>
+        <label for="rareMaterials">Rare Materials</label>
+        </div>
+        <span class="dnr-spacer"><i class="fa-light fa-comet"></i></span>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="rareMaterials"
+          name="rareMaterials"
+          placeholder="0"
+          class="form-fields dnr-valueinput"
+          value="{{rareMaterials}}"
+        />
       </div>
       <div title="rare biologicals">
-        <label for="rareBiologicals">
-          <div>Rare Biologicals</div>
-        </label>
-        <span class="dnr-spacer"><i class="fa-light fa-dna"></i></span><input
-        type="number"
-        data-dtype="Number"
-        step="1"
-        id="rareBiologicals"
-        name="rareBiologicals"
-        placeholder="0"
-        class="form-fields dnr-valueinput"
-        value="{{rareBiologicals}}"/>
+        <div>
+          <label for="rareBiologicals">Rare Biologicals</label>
+        </div>
+        <span class="dnr-spacer"><i class="fa-light fa-dna"></i></span>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="rareBiologicals"
+          name="rareBiologicals"
+          placeholder="0"
+          class="form-fields dnr-valueinput"
+          value="{{rareBiologicals}}"
+        />
       </div>
     </div>
   </section>
@@ -92,9 +104,9 @@
     <header class="directory-header dnr-header">Morale and Fatigue</header>
     <div class="flexrow">
       <div title="morale">
-        <label for="morale">
-          <div>Morale</div>
-        </label>
+        <div>
+          <label for="morale">Morale</label>
+        </div>
         <span class="dnr-spacer"><i class="fa-light fa-face-smile"></i></span>
         <input
           type="number"
@@ -104,12 +116,14 @@
           name="morale"
           placeholder="0"
           class="form-fields dnr-valueinput"
-          value="{{morale}}"/>
+          value="{{morale}}"
+        />
       </div>
       <div title="cfi">
-        <label for="cfi">
-          <div>Fatigue Index</div>
-        </label><span class="dnr-spacer">CFI:</span>
+        <div>
+          <label for="cfi">Fatigue Index</label>
+        </div>
+        <span class="dnr-spacer">CFI:</span>
         <input
           type="number"
           data-dtype="Number"
@@ -118,12 +132,13 @@
           name="cfi"
           placeholder="0"
           class="form-fields dnr-valueinput"
-          value="{{cfi}}"/>
+          value="{{cfi}}"
+        />
       </div>
       <div title="fatigue">
-        <label for="fatigue">
-        <div>Fatigue</div>
-        </label>
+        <div>
+          <label for="fatigue">Fatigue</label>
+        </div>
         <span class="dnr-spacer"><i class="fa-regular fa-face-weary"></i></span>
         <select id="dnr-fatigue" name="fatigue">
           {{#select fatigue}}
@@ -157,7 +172,8 @@
                 name="cei"
                 placeholder="0"
                 class="form-fields dnr-valueinput"
-                value="{{cei}}"/>
+                value="{{cei}}"
+              />
             </p>
             <p class="clickable">
               <i class="fa-solid fa-dice"></i>
