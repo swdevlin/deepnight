@@ -20,6 +20,7 @@ Hooks.on('ready', async function() {
   window.deepnightRevelation.loadFromSettings();
 });
 
+//noinspection JSUnusedLocalSymbols
 Hooks.on('updateSetting', (setting, value, options) => {
   if (setting.key.startsWith('deepnight.'))
     if (!setting.key.includes('history')) {
