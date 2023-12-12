@@ -624,9 +624,9 @@ export class DeepnightRevelation extends Application {
 
   async refuel() {
     const time = this.fuelTime();
-    for (let i=0; i<time.days; i++);
+    for (let i=0; i<time.days; i++)
       this.incDay();
-    for (let i=0; i<time.watches; i++);
+    for (let i=0; i<time.watches; i++)
       this.incWatch();
     await this.saveSettings();
     await this.postTime('Deepnight Revelation has been refueled');
