@@ -73,53 +73,77 @@ export class DeepnightRevelation extends Application {
   activateListeners(html) {
     super.activateListeners(html)
 
-    html.on('click', '#dnr-jump', (event) => {
+    html.on('click', '#dnr-jump', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.jump();
     });
 
-    html.on('click', '#dnr-refuel', (event) => {
+    html.on('click', '#dnr-refuel', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.refuel();
     });
 
-    html.on('click', '#dnr-reset', (event) => {
+    html.on('click', '#dnr-reset', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.reset();
     });
 
-    html.on('click', '#dnr-day', (event) => {
+    html.on('click', '#dnr-day', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.dayPasses();
     });
 
-    html.on('click', '#dnr-watch', (event) => {
+    html.on('click', '#dnr-watch', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.watchPasses();
     });
 
-    html.on('click', '#dnr-save', (event) => {
+    html.on('click', '#dnr-save', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.saveEdits();
     });
 
     html.on('click', '.dei-check', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       if (!evt.target.className.includes('dnr-valueinput') )
         this.deiCheck(evt);
     });
 
     html.on('click', '.cei-check', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       if (!evt.target.className.includes('dnr-valueinput') )
         this.ceiCheck(evt);
     });
 
     html.on('click', '#ceim-interval', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.setCEIMInterval();
     });
 
     html.on('click', '#cei-interval', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.setCEIInterval();
     });
 
     html.on('click', '#cfi-interval', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.setCFIInterval();
     });
 
     html.on('click', '#history', (evt) => {
+      evt.stopPropagation()
+      evt.preventDefault()
       this.showHistory();
     });
 
