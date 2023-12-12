@@ -1,6 +1,6 @@
 .dnr-shipicon {
   display: inline-block;
-  width: 100%;
+  /*width: 100%;*/
   height: 100%;
   background-image: url(../icons/revelation.png);
   background-repeat: no-repeat;
@@ -69,8 +69,20 @@ div.dnr-buttons {
 
 .dnr-header {
   font-variant-caps: small-caps;
-  color: var(--s2d6-default-color);
-  /*#29aae1*/
+  font-size: 12pt;
+  font-weight: 500;
+  padding-bottom: 2px;
+  padding-top: 4px;
+  color: var(--color-text-light-0);
+}
+
+.dnr-subheader {
+  font-variant-caps: small-caps;
+  font-size: 10pt;
+  font-weight: 500;
+  padding-bottom: 2px;
+  padding-top: 4px;
+  color: var(--color-text-light-0);
 }
 
 .dnr-valueinput {
@@ -83,5 +95,44 @@ div.dnr-buttons {
 }
 
 .dnr-spacer {
-  padding-right: 4px;
+  padding-right: 6px;
 }
+
+div.deepnight-wrapper {
+  flex-direction: column;
+}
+
+section.deepnight {
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+  flex: 0;
+}
+
+section.calendar {
+  border-bottom: 1px solid var(--s2d6-light-color);
+}
+
+section.deepnight-buttons {
+  align-self: flex-end;
+}
+
+.dei-wrapper {
+  padding-right: 8px;
+}
+
+table.history td {
+  text-align: center;
+}
+
+td.logview {
+  cursor: pointer;
+}
+
+td.logreset {
+  cursor: pointer;
+}
+
+.clickable {
+  cursor: pointer;
+}
+

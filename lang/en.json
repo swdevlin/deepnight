@@ -43,10 +43,18 @@
       "ceimIntervalHint": "The number of days until a CEIM change is performed",
       "deiTrainingName": "DEI Training",
       "deiTrainingHint": "The number of days it takes to do divisional training",
-      "ceiIntervalName": "CEI Training",
+      "ceiIntervalName": "CEI Interval",
       "ceiIntervalHint": "The number of days until crew training can be performed",
       "ceiTrainingName": "CEI Training",
       "ceiTrainingHint": "The number of days it takes to do crew training"
+    },
+    "Tabs": {
+      "calendar": "Calendar",
+      "calendarTooltip": "Calendar",
+      "crew": "Crew",
+      "crewTooltip": "Crew",
+      "materials": "Materials",
+      "materialsTooltip": "Materials"
     }
   },
   "Simple": "Simple",

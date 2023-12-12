@@ -1,4 +1,3 @@
-import {RevelationConsole} from "./revelationConsole.js";
 import {
   CEIRollModifiers,
   ceiTaskDM,
@@ -7,9 +6,11 @@ import {
   FatigueLevels,
   RollTypes
 } from "./helpers.js";
+import {HistoryDialog} from "./historyDialog.js";
 
 export class DeepnightRevelation extends Application {
   static ID = 'deepnight';
+
   constructor(src, options = {}) {
     super(src, options);
     this.status = {
@@ -26,22 +27,10 @@ export class DeepnightRevelation extends Application {
       cfi: 0,
       cei: 7,
       ceim: 0,
-      flight: {
-        dei: 0,
-        crew: 0,
-      },
-      mission: {
-        dei: 0,
-        crew: 0,
-      },
-      operations: {
-        dei: 0,
-        crew: 0,
-      },
-      engineering: {
-        dei: 0,
-        crew: 0,
-      },
+      flight: {dei: 0, crew: 0,},
+      mission: {dei: 0, crew: 0,},
+      operations: {dei: 0, crew: 0,},
+      engineering: {dei: 0, crew: 0,},
     };
     this.history = [];
     this.command = {
@@ -55,12 +44,96 @@ export class DeepnightRevelation extends Application {
     }
 
     /** @type {Event} */
-    this.eventListener;
+    // this.eventListener;
+  }
+
+  static get defaultOptions() {
+    return mergeObject(super.defaultOptions, {
+      id: "deepnight",
+      template: 'modules/deepnight/src/templates/deepnight.hbs',
+      minimizable: true,
+      resizable: false,
+      width: 750,
+      height: 710,
+      title: "Deepnight Revelation"
+    })
+  }
+
+  redraw(force) {
+    this.render(force)
+  }
+
+  getData() {
+    return mergeObject(this.templateData(), {
+      is_gm: game.user.isGM,
+    })
+  }
+
+
+  activateListeners(html) {
+    super.activateListeners(html)
+
+    html.on('click', '#dnr-jump', (event) => {
+      this.jump();
+    });
+
+    html.on('click', '#dnr-refuel', (event) => {
+      this.refuel();
+    });
+
+    html.on('click', '#dnr-reset', (event) => {
+      this.reset();
+    });
+
+    html.on('click', '#dnr-day', (event) => {
+      this.dayPasses();
+    });
+
+    html.on('click', '#dnr-watch', (event) => {
+      this.watchPasses();
+    });
+
+    html.on('click', '#dnr-save', (event) => {
+      this.saveEdits();
+    });
+
+    html.on('click', '.dei-check', (evt) => {
+      if (!evt.target.className.includes('dnr-valueinput') )
+        this.deiCheck(evt);
+    });
+
+    html.on('click', '.cei-check', (evt) => {
+      if (!evt.target.className.includes('dnr-valueinput') )
+        this.ceiCheck(evt);
+    });
+
+    html.on('click', '#ceim-interval', (evt) => {
+      this.setCEIMInterval();
+    });
+
+    html.on('click', '#cei-interval', (evt) => {
+      this.setCEIInterval();
+    });
+
+    html.on('click', '#cfi-interval', (evt) => {
+      this.setCFIInterval();
+    });
+
+    html.on('click', '#history', (evt) => {
+      this.showHistory();
+    });
+
+  }
+
+  async showHistory() {
+    if (!window.deepnightHistory)
+      window.deepnightHistory = new HistoryDialog().render(true);
+    window.deepnightHistory.render(true);
   }
 
   async loadFromSettings() {
     this.status = await game.settings.get('deepnight', 'status');
-    this.updatePanel();
+    this.history = await game.settings.get('deepnight', 'history');
   }
 
   get year() { return this.status.year; }
@@ -124,7 +197,7 @@ export class DeepnightRevelation extends Application {
   set cfiInterval(i) { this.status.cfiInterval = i; }
 
   async saveHistory() {
-    this.history.push([
+    this.history.unshift([
       this.year,
       this.day,
       this.watch,
@@ -237,7 +310,7 @@ export class DeepnightRevelation extends Application {
       fatigueLevels: FatigueLevels,
       fatigue: this.fatigue,
     };
-    const dialogContent = await renderTemplate('modules/deepnight/src/templates/eiCheckDialog.hbs', data)
+    const dialogContent = await renderTemplate('modules/deepnight/src/templates/eiCheckDialog.hbs', data);
 
     const dialogOptions = {
       title: label,
@@ -321,43 +394,28 @@ export class DeepnightRevelation extends Application {
     new Dialog(dialogOptions).render(true);
   }
 
-  async updatePanel() {
-    const section = document.querySelector('section#deepnight');
-    const role = game.user.isGM ? 'referee' : 'player';
-    section.innerHTML = await renderTemplate(`modules/deepnight/src/templates/${role}/sidebar-contents.hbs`, this.templateData());
+  async setCEIMInterval() {
+    const ceimIntervalRoll = await game.settings.get('deepnight', 'ceimInterval');
+    const roller = new Roll(ceimIntervalRoll);
+    await roller.evaluate({ async: true });
+    this.ceimInterval = roller.total;
+    this.redraw();
+  }
 
-    $('#dnr-jump').on('click', () => {
-      this.jump();
-    });
+  async setCEIInterval() {
+    const ceiIntervalRoll = await game.settings.get('deepnight', 'ceiInterval');
+    const roller = new Roll(ceiIntervalRoll);
+    await roller.evaluate({ async: true });
+    this.ceiInterval = roller.total;
+    this.redraw();
+  }
 
-    $('#dnr-refuel').on('click', () => {
-      this.refuel();
-    });
-
-    $('#dnr-reset').on('click', () => {
-      this.reset();
-    });
-
-    $('#dnr-day').on('click', () => {
-      this.dayPasses();
-    });
-
-    $('#dnr-watch').on('click', () => {
-      this.watchPasses();
-    });
-
-    $('#dnr-save').on('click', () => {
-      this.saveEdits();
-    });
-
-    $('.dei-check').on('click', (evt) => {
-      if (!evt.target.className.includes('dnr-valueinput') )
-        this.deiCheck(evt);
-    });
-    $('.cei-check').on('click', (evt) => {
-      if (!evt.target.className.includes('dnr-valueinput') )
-        this.ceiCheck(evt);
-    });
+  async setCFIInterval() {
+    const cfiIntervalRoll = await game.settings.get('deepnight', 'cfiInterval');
+    const roller = new Roll(cfiIntervalRoll);
+    await roller.evaluate({ async: true });
+    this.cfiInterval = roller.total;
+    this.redraw();
   }
 
   saveEdits() {
@@ -400,13 +458,61 @@ export class DeepnightRevelation extends Application {
       engineering: {...this.engineering},
       fatigue: this.fatigue,
       fatigueLevels: FatigueLevels,
+      ceiInterval: this.ceiInterval,
+      ceimInterval: this.ceimInterval,
+      cfiInterval: this.cfiInterval,
     };
 
     data.mission.deiDM = computeDM(data.mission.dei);
     data.flight.deiDM = computeDM(data.flight.dei);
     data.operations.deiDM = computeDM(data.operations.dei);
     data.engineering.deiDM = computeDM(data.engineering.dei);
+
     return data;
+  }
+
+  async sendCEIMessage() {
+    const time = game.settings.get('deepnight', 'ceiTraining');
+    const data = this.templateData();
+    data.message = `CEI can be improved by spending ${time} days.`;
+    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
+
+    let chatData = {
+      user: game.userId,
+      speaker: ChatMessage.getSpeaker(),
+      content: message,
+      whisper: []
+    }
+    ChatMessage.create(chatData, {});
+  }
+
+  async sendCEIMMessage() {
+    const data = this.templateData();
+    data.message = `It is time for a CEIM check.`;
+    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
+
+    let chatData = {
+      user: game.userId,
+      speaker: ChatMessage.getSpeaker(),
+      content: message,
+      whisper: []
+    }
+    ChatMessage.create(chatData, {});
+  }
+
+  async sendCFIMessage() {
+    this.cfi += 1;
+    const data = this.templateData();
+    data.message = `CFI has increased by 1. Roll against CFI of ${this.cfi} to see if overall fatigue increases.`;
+    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
+
+    let chatData = {
+      user: game.userId,
+      speaker: ChatMessage.getSpeaker(),
+      content: message,
+      whisper: []
+    }
+    ChatMessage.create(chatData, {});
   }
 
   incDay() {
@@ -416,6 +522,21 @@ export class DeepnightRevelation extends Application {
     } else
       this.day++;
     this.daysOnMission++;
+    if (this.ceimInterval > 0) {
+      this.ceimInterval -= 1;
+      if (this.ceimInterval === 0)
+        this.sendCEIMMessage();
+    }
+    if (this.ceiInterval > 0) {
+      this.ceiInterval -= 1;
+      if (this.ceiInterval === 0)
+        this.sendCEIMessage();
+    }
+    if (this.cfiInterval > 0) {
+      this.cfiInterval -= 1;
+      if (this.cfiInterval === 0)
+        this.sendCFIMessage();
+    }
     this.supplies -= game.settings.get('deepnight', 'suppliesPerDay');
   }
 

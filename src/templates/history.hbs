@@ -1,0 +1,37 @@
+<form>
+  <table class="history">
+    <thead>
+    <row>
+      <th>Date</th>
+      <th>Days on Mission</th>
+      <th>Supplies</th>
+      <th>CFI</th>
+      {{#if is_gm}}
+      <th colspan="2">actions</th>
+      {{/if}}
+    </row>
+    </thead>
+    <tbody>
+      {{#each history}}
+        <tr>
+          <td>{{this.[0]}}.{{this.[1]}}</td>
+          <td>{{this.[3]}}</td>
+          <td>{{this.[5]}}</td>
+          <td>{{this.[9]}}</td>
+          {{#if ../is_gm}}
+          <td class="logview" data-index="{{@index}}"><i class="fa-solid fa-magnifying-glass"></i></td>
+          <td class="logreset" data-index="{{@index}}"><i class="fa-solid fa-rotate-left"></i></td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+  <div class="flexrow action-buttons">
+    <button id="first"><i class="fa-solid fa-left-to-line"></i></button>
+    <button id="previous"><i class="fa-solid fa-left"></i></button>
+    <button id="next"><i class="fa-solid fa-right"></i></button>
+    <button id="last"><i class="fa-solid fa-right-to-line"></i></button>
+  </div>
+
+</form>

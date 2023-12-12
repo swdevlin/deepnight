@@ -1,0 +1,397 @@
+<div class="deepnight-wrapper">
+  <section class="deepnight calendar">
+    <div class="flexrow action-buttons">
+      <div>
+        <span class="dnr-spacer"><i class="fa-light fa-calendar-days"></i></span>
+        <b>{{year}}.{{day}}</b>
+      </div>
+      <div>
+        <span class="dnr-spacer">{{localize "DEEPNIGHT.daysOnMission"}}:</span>
+        <b>{{daysOnMission}}</b>
+      </div>
+      <div class="clickable" id="history">
+        <span class="dnr-spacer"><i class="fa-regular fa-rectangle-vertical-history"></i></span>History
+      </div>
+    </div>
+    <div class="flexrow action-buttons">
+      <div>
+        <p>Days until CEIM: {{ceimInterval}} <span id="ceim-interval"><i class="fa-solid fa-dice"></i></span></p>
+      </div>
+      <div>
+        <p>Days until CEI: {{ceiInterval}} <span id="cei-interval"><i class="fa-solid fa-dice"></i></span></p>
+      </div>
+      <div>
+        <p>Days until CFI: {{cfiInterval}} <span id="cfi-interval"><i class="fa-solid fa-dice"></i></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="deepnight resources">
+    <header class="directory-header dnr-header">Resources</header>
+    <div class="flexrow action-buttons">
+      <div title="Supplies">
+        <label for="supplies">
+          <div></span>Supplies</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-crate-apple"></i></span><input
+        type="number"
+        data-dtype="Number"
+        step="1"
+        id="supplies"
+        name="supplies"
+        placeholder="0"
+        class="form-fields dnr-valueinput"
+        value="{{supplies}}"/>
+      </div>
+      <div title="exotic materials">
+        <label for="exoticMaterials">
+          <div>Exotic Materials</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-sparkles"></i></span><input
+        type="number"
+        data-dtype="Number"
+        step="1"
+        id="exoticMaterials"
+        name="exoticMaterials"
+        placeholder="0"
+        class="form-fields dnr-valueinput"
+        value="{{exoticMaterials}}"/>
+      </div>
+      <div title="rare materials">
+        <label for="rareMaterials">
+          <div>Rare Materials</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-comet"></i></span><input
+        type="number"
+        data-dtype="Number"
+        step="1"
+        id="rareMaterials"
+        name="rareMaterials"
+        placeholder="0"
+        class="form-fields dnr-valueinput"
+        value="{{rareMaterials}}"/>
+      </div>
+      <div title="rare biologicals">
+        <label for="rareBiologicals">
+          <div>Rare Biologicals</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-dna"></i></span><input
+        type="number"
+        data-dtype="Number"
+        step="1"
+        id="rareBiologicals"
+        name="rareBiologicals"
+        placeholder="0"
+        class="form-fields dnr-valueinput"
+        value="{{rareBiologicals}}"/>
+      </div>
+    </div>
+  </section>
+
+  <section class="deepnight morale">
+    <header class="directory-header dnr-header">Morale and Fatigue</header>
+    <div class="flexrow">
+      <div title="morale">
+        <label for="morale">
+          <div>Morale</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-face-smile"></i></span>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="morale"
+          name="morale"
+          placeholder="0"
+          class="form-fields dnr-valueinput"
+          value="{{morale}}"/>
+      </div>
+      <div title="cfi">
+        <label for="cfi">
+          <div>Fatigue Index</div>
+        </label><span class="dnr-spacer">CFI:</span>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="cfi"
+          name="cfi"
+          placeholder="0"
+          class="form-fields dnr-valueinput"
+          value="{{cfi}}"/>
+      </div>
+      <div title="fatigue">
+        <label for="fatigue">
+        <div>Fatigue</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-regular fa-face-weary"></i></span>
+        <select id="dnr-fatigue" name="fatigue">
+          {{#select fatigue}}
+            {{#each fatigueLevels}}
+              <option value="{{@key}}">{{localize this.label}}
+              </option>
+            {{/each}}
+          {{/select}}
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class=" deepnight crew">
+    <header class="directory-header dnr-header">Crew</header>
+    <div class="flexrow">
+      <div>
+        <div class="dnr-panel dnr-ceipanel dei-check"
+             data-tooltip="skill check"
+             data-dei="{{cei}}"
+             data-label="CEI check"
+        >
+          <div class="dnr-panel-text">
+            <p>
+              <label for="cei"></label>
+              <input
+                type="number"
+                data-dtype="Number"
+                step="1"
+                id="cei"
+                name="cei"
+                placeholder="0"
+                class="form-fields dnr-valueinput"
+                value="{{cei}}"/>
+            </p>
+            <p class="clickable">
+              <i class="fa-solid fa-dice"></i>
+            </p>
+          </div>
+        </div>
+        <div class="dnr-panel dnr-ceimpanel">
+          <div class="dnr-panel-text">
+            <p>
+              <label for="ceim"></label>
+              <input
+                type="number"
+                data-dtype="Number"
+                step="1"
+                id="ceim"
+                name="ceim"
+                placeholder="0"
+                class="form-fields dnr-valueinput"
+                value="{{ceim}}"/>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </section>
+
+  <section class="deepnight divisions">
+    <header class="directory-header dnr-header">Divisions</header>
+    <div class="flexrow">
+      <div class="dei-wrapper">
+        <header class="directory-header dnr-subheader">Mission</header>
+        <div class="flexrow">
+          <div>
+            <div class="dnr-panel dnr-deipanel dei-check"
+                 data-tooltip="skill check"
+                 data-dei="{{mission.dei}}"
+                 data-label="Mission DEI check"
+            >
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="mission-dei"></label>
+                  <input
+                    type="number"
+                    data-dtype="Number"
+                    step="1"
+                    id="mission-dei"
+                    name="mission-dei"
+                    placeholder="0"
+                    class="form-fields dnr-valueinput"
+                    value="{{mission.dei}}"/>
+                </p>
+                <p class="clickable">
+                  <i class="fa-solid fa-dice"></i>
+                </p>
+              </div>
+            </div>
+            <div class="dnr-panel dnr-crewpanel">
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="mission-crew"></label>
+                  <input
+                    type="number"
+                    data-dtype="Number"
+                    step="1"
+                    id="mission-crew"
+                    name="mission-crew"
+                    placeholder="0"
+                    class="form-fields dnr-valueinput"
+                    value="{{mission.crew}}"/>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <header class="directory-header dnr-subheader">Flight</header>
+        <div class="flexrow">
+          <div>
+            <div
+              class="dnr-panel dnr-deipanel dei-check"
+              data-tooltip="skill check"
+              data-dei="{{flight.dei}}"
+              data-label="Flight DEI check"
+            >
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="flight-dei"></label>
+                  <input
+                    type="number"
+                    id="flight-dei"
+                    data-dtype="Number"
+                    step="1"
+                    name="flight-dei"
+                    placeholder="0"
+                    class="form-fields dnr-valueinput"
+                    value="{{flight.dei}}"/>
+                </p>
+                <p class="clickable">
+                  <i class="fa-solid fa-dice"></i>
+                </p>
+              </div>
+            </div>
+            <div class="dnr-panel dnr-crewpanel">
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="flight-crew"></label>
+                  <input
+                    type="number"
+                    id="flight-crew"
+                    data-dtype="Number"
+                    step="1"
+                    name="flight-crew"
+                    placeholder="0"
+                    class="form-fields dnr-valueinput"
+                    value="{{flight.crew}}"/>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flexrow">
+      <div>
+        <header class="directory-header dnr-subheader">Operations</header>
+        <div class="flexrow">
+          <div class="dei-wrapper">
+            <div
+              class="dnr-panel dnr-deipanel dei-check"
+              data-tooltip="skill check"
+              data-dei="{{operations.dei}}"
+              data-label="Operations DEI check"
+            >
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="operations-dei"></label>
+                  <input
+                    type="number"
+                    id="operations-dei"
+                    data-dtype="Number"
+                    step="1"
+                    name="operations-dei"
+                    placeholder="0"
+                    class="form-fields dnr-valueinput"
+                    value="{{operations.dei}}"/>
+                </p>
+                <p class="clickable">
+                  <i class="fa-solid fa-dice"></i>
+                </p>
+              </div>
+            </div>
+            <div class="dnr-panel dnr-crewpanel">
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="operations-crew"></label>
+                  <input
+                    type="number"
+                    id="operations-crew"
+                    data-dtype="Number"
+                    step="1"
+                    name="operations-crew"
+                    placeholder="0"
+                    class="form-fields dnr-valueinput"
+                    value="{{operations.crew}}"/>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <header class="directory-header dnr-subheader">Engineering</header>
+        <div class="flexrow">
+          <div>
+            <div
+              class="dnr-panel dnr-deipanel dei-check"
+              data-tooltip="skill check"
+              data-dei="{{engineering.dei}}"
+              data-label="Engineering DEI check"
+            >
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="engineering-dei"></label>
+                  <input
+                    type="number"
+                    id="engineering-dei"
+                    data-dtype="Number"
+                    step="1"
+                    name="engineering-dei"
+                    placeholder="0"
+                    class="form-fields dnr-valueinput"
+                    value="{{engineering.dei}}"/>
+                </p>
+                <p class="clickable">
+                  <i class="fa-solid fa-dice"></i>
+                </p>
+              </div>
+            </div>
+            <div class="dnr-panel dnr-crewpanel">
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="engineering-crew"></label>
+                  <input
+                    type="number"
+                    id="engineering-crew"
+                    data-dtype="Number"
+                    step="1"
+                    name="engineering-crew"
+                    placeholder="0"
+                    class="form-fields dnr-valueinput"
+                    value="{{engineering.crew}}"/>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="deepnight-buttons">
+    <div class="flexrow action-buttons">
+      <button id="dnr-save"><i class="fa-regular fa-cloud-arrow-up"></i> {{localize "DEEPNIGHT.saveButtonTitle"}}</button>
+    </div>
+    <div class="flexrow action-buttons">
+      <button id="dnr-day"><i class="fa-regular fa-calendar-day"></i> {{localize "DEEPNIGHT.dayButtonTitle"}}</button>
+      <button id="dnr-watch"><i class="fa-regular fa-watch"></i> {{localize "DEEPNIGHT.watchButtonTitle"}}</button>
+      <button id="dnr-jump"><i class="fa-regular fa-calendar-week"></i> {{localize "DEEPNIGHT.jumpButtonTitle"}}</button>
+      <button id="dnr-refuel"><i class="fa-regular fa-gas-pump"></i> {{localize "DEEPNIGHT.refuelButtonTitle"}}</button>
+      <button id="dnr-reset"><i class="fa-regular fa-undo"></i></button>
+    </div>
+  </section>
+</div>

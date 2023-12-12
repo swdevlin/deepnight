@@ -1,0 +1,253 @@
+<div class="deepnight-wrapper">
+  <section class="deepnight calendar">
+    <div class="flexrow action-buttons">
+      <div>
+        <span class="dnr-spacer"><i class="fa-light fa-calendar-days"></i></span>
+        <b>{{year}}.{{day}}</b>
+      </div>
+      <div>
+        <span class="dnr-spacer">{{localize "DEEPNIGHT.daysOnMission"}}:</span>
+        <b>{{daysOnMission}}</b>
+      </div>
+      <div class="clickable" id="history">
+        <span class="dnr-spacer"><i class="fa-regular fa-rectangle-vertical-history"></i></span>History
+      </div>
+    </div>
+    <div class="flexrow action-buttons">
+      <div>
+        <p>Days until CEIM: {{ceimInterval}} <span id="ceim-interval"><i class="fa-solid fa-dice"></i></span></p>
+      </div>
+      <div>
+        <p>Days until CEI: {{ceiInterval}} <span id="cei-interval"><i class="fa-solid fa-dice"></i></span></p>
+      </div>
+      <div>
+        <p>Days until CFI: {{cfiInterval}} <span id="cfi-interval"><i class="fa-solid fa-dice"></i></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="deepnight resources">
+    <header class="directory-header dnr-header">Resources</header>
+    <div class="flexrow action-buttons">
+      <div title="Supplies">
+        <label for="supplies">
+          <div></span>Supplies</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-crate-apple"></i></span>
+        <b>{{supplies}}</b>
+      </div>
+      <div title="exotic materials">
+        <label for="exoticMaterials">
+          <div>Exotic Materials</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-sparkles"></i></span>
+        <b>{{exoticMaterials}}</b>
+      </div>
+      <div title="rare materials">
+        <label for="rareMaterials">
+          <div>Rare Materials</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-comet"></i></span>
+        <b>{{rareMaterials}}</b>
+      </div>
+      <div title="rare biologicals">
+        <label for="rareBiologicals">
+          <div>Rare Biologicals</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-dna"></i></span>
+        <b>{{rareBiologicals}}</b>
+      </div>
+    </div>
+  </section>
+
+  <section class="deepnight morale">
+    <header class="directory-header dnr-header">Morale and Fatigue</header>
+    <div class="flexrow">
+      <div title="morale">
+        <label for="morale">
+          <div>Morale</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-light fa-face-smile"></i></span>
+        <b>{{morale}}</b>
+      </div>
+      <div title="cfi">
+        <label for="cfi">
+          <div>Fatigue Index</div>
+        </label><span class="dnr-spacer">CFI:</span>
+        <b>{{cfi}}</b>
+      </div>
+      <div title="fatigue">
+        <label for="fatigue">
+        <div>Fatigue</div>
+        </label>
+        <span class="dnr-spacer"><i class="fa-regular fa-face-weary"></i></span>
+        <b>{{fatigue}}</b>
+      </div>
+    </div>
+  </section>
+
+  <section class=" deepnight crew">
+    <header class="directory-header dnr-header">Crew</header>
+    <div class="flexrow">
+      <div>
+        <div class="dnr-panel dnr-ceipanel dei-check"
+             data-tooltip="skill check"
+             data-dei="{{cei}}"
+             data-label="CEI check"
+        >
+          <div class="dnr-panel-text">
+            <p>
+              <label for="cei"></label>
+              <b>{{cei}}</b>
+            </p>
+            <p class="clickable">
+              <i class="fa-solid fa-dice"></i>
+            </p>
+          </div>
+        </div>
+        <div class="dnr-panel dnr-ceimpanel">
+          <div class="dnr-panel-text">
+            <p>
+              <label for="ceim"></label>
+              <b>{{cei}}</b>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </section>
+
+  <section class="deepnight divisions">
+    <header class="directory-header dnr-header">Divisions</header>
+    <div class="flexrow">
+      <div class="dei-wrapper">
+        <header class="directory-header dnr-subheader">Mission</header>
+        <div class="flexrow">
+          <div>
+            <div class="dnr-panel dnr-deipanel dei-check"
+                 data-tooltip="skill check"
+                 data-dei="{{mission.dei}}"
+                 data-label="Mission DEI check"
+            >
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="mission-dei"></label>
+                  <b>{{mission.dei}}</b>
+                </p>
+                <p class="clickable">
+                  <i class="fa-solid fa-dice"></i>
+                </p>
+              </div>
+            </div>
+            <div class="dnr-panel dnr-crewpanel">
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="mission-crew"></label>
+                  <b>{{mission.crew}}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <header class="directory-header dnr-subheader">Flight</header>
+        <div class="flexrow">
+          <div>
+            <div
+              class="dnr-panel dnr-deipanel dei-check"
+              data-tooltip="skill check"
+              data-dei="{{flight.dei}}"
+              data-label="Flight DEI check"
+            >
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="flight-dei"></label>
+                  <b>{{flight.dei}}</b>
+                </p>
+                <p class="clickable">
+                  <i class="fa-solid fa-dice"></i>
+                </p>
+              </div>
+            </div>
+            <div class="dnr-panel dnr-crewpanel">
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="flight-crew"></label>
+                  <b>{{flight.crew}}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flexrow">
+      <div>
+        <header class="directory-header dnr-subheader">Operations</header>
+        <div class="flexrow">
+          <div class="dei-wrapper">
+            <div
+              class="dnr-panel dnr-deipanel dei-check"
+              data-tooltip="skill check"
+              data-dei="{{operations.dei}}"
+              data-label="Operations DEI check"
+            >
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="operations-dei"></label>
+                  <b>{{operations.dei}}</b>
+                </p>
+                <p class="clickable">
+                  <i class="fa-solid fa-dice"></i>
+                </p>
+              </div>
+            </div>
+            <div class="dnr-panel dnr-crewpanel">
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="operations-crew"></label>
+                  <b>{{operations.crew}}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <header class="directory-header dnr-subheader">Engineering</header>
+        <div class="flexrow">
+          <div>
+            <div
+              class="dnr-panel dnr-deipanel dei-check"
+              data-tooltip="skill check"
+              data-dei="{{engineering.dei}}"
+              data-label="Engineering DEI check"
+            >
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="engineering-dei"></label>
+                  <b>{{engineering.dei}}</b>
+                </p>
+                <p class="clickable">
+                  <i class="fa-solid fa-dice"></i>
+                </p>
+              </div>
+            </div>
+            <div class="dnr-panel dnr-crewpanel">
+              <div class="dnr-panel-text">
+                <p>
+                  <label for="engineering-crew"></label>
+                  <b>{{engineering.crew}}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
