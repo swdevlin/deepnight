@@ -32,6 +32,7 @@ Hooks.on('updateSetting', (setting, value, options) => {
     }
 });
 
+//noinspection JSUnusedLocalSymbols
 Hooks.on('renderActorDirectory', async (app, html, data) => {
   let button = await renderTemplate(
     'modules/deepnight/src/templates/actors_button.hbs'
