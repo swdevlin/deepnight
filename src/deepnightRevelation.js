@@ -4,7 +4,7 @@ import {
   computeDM,
   Difficulties,
   FatigueLevels,
-  RollTypes
+  RollTypes, statusToLog
 } from "./helpers.js";
 import {HistoryDialog} from "./historyDialog.js";
 
@@ -31,6 +31,9 @@ export class DeepnightRevelation extends Application {
       mission: {dei: 0, crew: 0,},
       operations: {dei: 0, crew: 0,},
       engineering: {dei: 0, crew: 0,},
+      cfiInterval: 0,
+      ceiInterval: 0,
+      ceimInterval: 0,
     };
     this.history = [];
     this.command = {
@@ -74,76 +77,76 @@ export class DeepnightRevelation extends Application {
     super.activateListeners(html)
 
     html.on('click', '#dnr-jump', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.jump();
     });
 
     html.on('click', '#dnr-refuel', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.refuel();
     });
 
     html.on('click', '#dnr-reset', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.reset();
     });
 
     html.on('click', '#dnr-day', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.dayPasses();
     });
 
     html.on('click', '#dnr-watch', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.watchPasses();
     });
 
     html.on('click', '#dnr-save', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.saveEdits();
     });
 
     html.on('click', '.dei-check', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       if (!evt.target.className.includes('dnr-valueinput') )
         this.deiCheck(evt);
     });
 
     html.on('click', '.cei-check', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       if (!evt.target.className.includes('dnr-valueinput') )
         this.ceiCheck(evt);
     });
 
     html.on('click', '#ceim-interval', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.setCEIMInterval();
     });
 
     html.on('click', '#cei-interval', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.setCEIInterval();
     });
 
     html.on('click', '#cfi-interval', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.setCFIInterval();
     });
 
     html.on('click', '#history', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.showHistory();
     });
 
@@ -221,32 +224,7 @@ export class DeepnightRevelation extends Application {
   set cfiInterval(i) { this.status.cfiInterval = i; }
 
   async saveHistory() {
-    this.history.unshift([
-      this.year,
-      this.day,
-      this.watch,
-      this.daysOnMission,
-      this.morale,
-      this.supplies,
-      this.rareMaterials,
-      this.rareBiologicals,
-      this.exoticMaterials,
-      this.cfi,
-      this.cei,
-      this.ceim,
-      this.flight.dei,
-      this.flight.crew,
-      this.mission.dei,
-      this.mission.crew,
-      this.operations.dei,
-      this.operations.crew,
-      this.engineering.dei,
-      this.engineering.crew,
-      this.fatigue,
-      this.ceiInterval,
-      this.ceimInterval,
-      this.cfiInterval,
-    ]);
+    this.history.unshift(statusToLog(this.status));
     await game.settings.set('deepnight', 'history', this.history);
   }
 
@@ -459,6 +437,9 @@ export class DeepnightRevelation extends Application {
     this.exoticMaterials = parseInt($('#exoticMaterials').val(), 10);
     this.rareMaterials = parseInt($('#rareMaterials').val(), 10);
     this.rareBiologicals = parseInt($('#rareBiologicals').val(), 10);
+    this.ceimInterval = parseInt($('#ceimInterval').val(), 10);
+    this.ceiInterval = parseInt($('#ceiInterval').val(), 10);
+    this.cfiInterval = parseInt($('#cfiInterval').val(), 10);
     this.saveSettings();
   }
 

@@ -1,3 +1,5 @@
+import {logToStatus} from "./helpers.js";
+
 export class HistoryDialog extends Application {
   static ID = 'deepnight-history';
 
@@ -70,15 +72,15 @@ export class HistoryDialog extends Application {
     super.activateListeners(html)
 
     html.on('click', '#first', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.page = 0;
       this.redraw();
     });
 
     html.on('click', '#previous', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       if (this.page > 0) {
         this.page--;
         this.redraw();
@@ -86,8 +88,8 @@ export class HistoryDialog extends Application {
     });
 
     html.on('click', '#next', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       if ((this.page+1)*this.pageSize < this.history.length) {
         this.page++;
         this.redraw();
@@ -95,8 +97,8 @@ export class HistoryDialog extends Application {
     });
 
     html.on('click', '#last', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       const newPage = Math.floor(this.history.length / this.pageSize);
       if (newPage !== this.page) {
         this.page = Math.floor(this.history.length / this.pageSize);
@@ -105,12 +107,17 @@ export class HistoryDialog extends Application {
     });
 
     html.on('click', '.logview', (evt) => {
-      evt.stopPropagation()
-      evt.preventDefault()
+      evt.stopPropagation();
+      evt.preventDefault();
       this.viewEntry(evt);
     });
 
     // track reset
+    html.on('click', '.logreset', (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      this.resetEntry(evt);
+    });
 
   }
 
@@ -134,5 +141,18 @@ export class HistoryDialog extends Application {
     };
 
     new Dialog(dialogOptions).render(true);
+  }
+
+  async resetEntry(evt) {
+    const index = parseInt(evt.currentTarget.dataset.index, 10);
+    const offset = this.page * this.pageSize + index;
+    const data = this.history[offset];
+    this.history.unshift(data);
+    this.page = 0;
+    const status = await game.settings.get('deepnight', 'status');
+    logToStatus(status, data);
+    await game.settings.set('deepnight', 'history', this.history);
+    await game.settings.set('deepnight', 'status', status);
+    this.redraw();
   }
 }

@@ -21,15 +21,16 @@ Hooks.on('ready', async function() {
 });
 
 //noinspection JSUnusedLocalSymbols
-Hooks.on('updateSetting', (setting, value, options) => {
+Hooks.on('updateSetting', async (setting, value, options) => {
+  console.log('Deepnight', setting.key);
   if (setting.key.startsWith('deepnight.'))
-    if (!setting.key.includes('history')) {
-      window.deepnightRevelation.loadFromSettings();
+    await window.deepnightRevelation.loadFromSettings();
+
+    if (!setting.key.includes('history'))
       window.deepnightRevelation.redraw();
-    }
-    if (setting.key.includes('history') && window.deepnightHistory) {
+
+    if (setting.key.includes('history') && window.deepnightHistory)
       window.deepnightHistory.redraw();
-    }
 });
 
 //noinspection JSUnusedLocalSymbols
@@ -42,7 +43,9 @@ Hooks.on('renderActorDirectory', async (app, html, data) => {
     .prepend(button)
     .promise()
     .done(() => {
-      $('#btn-deepnight').on('click', (e) => {
+      $('#btn-deepnight').on('click', (evt) => {
+        evt.stopPropagation();
+        evt.preventDefault();
         window.deepnightRevelation.redraw(true);
       });
     })

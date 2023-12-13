@@ -13,15 +13,48 @@
         <span class="dnr-spacer"><i class="fa-regular fa-rectangle-vertical-history"></i></span>History
       </div>
     </div>
-    <div class="flexrow action-buttons">
-      <div>
-        <p>Days until CEIM: {{ceimInterval}} <span id="ceim-interval"><i class="fa-solid fa-dice"></i></span></p>
+    <div class="flexrow topspacing">
+      <div class="form-group">
+        <label for="ceimInterval">Days until CEIM: </label>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="ceimInterval"
+          name="ceimInterval"
+          placeholder="0"
+          class="form-fields dnr-valueinput"
+          value="{{ceimInterval}}"
+        />
+        <span id="ceim-interval"><i class="fa-solid fa-dice"></i></span>
       </div>
-      <div>
-        <p>Days until CEI: {{ceiInterval}} <span id="cei-interval"><i class="fa-solid fa-dice"></i></span></p>
+      <div class="form-group">
+        <label for="ceiInterval">Days until CEI: </label>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="ceiInterval"
+          name="ceiInterval"
+          placeholder="0"
+          class="form-fields dnr-valueinput"
+          value="{{ceiInterval}}"
+        />
+        <span id="cei-interval"><i class="fa-solid fa-dice"></i></span>
       </div>
-      <div>
-        <p>Days until CFI: {{cfiInterval}} <span id="cfi-interval"><i class="fa-solid fa-dice"></i></span></p>
+      <div class="form-group">
+        <label for="ceiInterval">Days until CFI: </label>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="cfiInterval"
+          name="cfiInterval"
+          placeholder="0"
+          class="form-fields dnr-valueinput"
+          value="{{cfiInterval}}"
+        />
+        <span id="cfi-interval"><i class="fa-solid fa-dice"></i></span>
       </div>
     </div>
   </section>

@@ -85,3 +85,59 @@ export const FatigueLevels = {
   exhausted: {label: 'Exhausted fatigued', dm: -3},
   incapable: {label: 'Incapable', dm: -4},
 };
+
+export const logToStatus = (status, log) => {
+  status.year = log[0];
+  status.day = log[1];
+  status.watch = log[2];
+  status.daysOnMission = log[3];
+  status.morale = log[4];
+  status.supplies = log[5];
+  status.rareMaterials = log[6];
+  status.rareBiologicals = log[7];
+  status.exoticMaterials = log[8];
+  status.cfi = log[9];
+  status.cei = log[10];
+  status.ceim = log[11];
+  status.flight.dei = log[12];
+  status.flight.crew = log[13];
+  status.mission.dei = log[14];
+  status.mission.crew = log[15];
+  status.operations.dei = log[16];
+  status.operations.crew = log[17];
+  status.engineering.dei = log[18];
+  status.engineering.crew = log[19];
+  status.fatigue = log[20];
+  status.ceiInterval = log[21];
+  status.ceimInterval = log[22];
+  status.cfiInterval = log[23];
+}
+
+export const statusToLog = (status) => {
+  return [
+    status.year,
+    status.day,
+    status.watch,
+    status.daysOnMission,
+    status.morale,
+    status.supplies,
+    status.rareMaterials,
+    status.rareBiologicals,
+    status.exoticMaterials,
+    status.cfi,
+    status.cei,
+    status.ceim,
+    status.flight.dei,
+    status.flight.crew,
+    status.mission.dei,
+    status.mission.crew,
+    status.operations.dei,
+    status.operations.crew,
+    status.engineering.dei,
+    status.engineering.crew,
+    status.fatigue,
+    status.ceiInterval,
+    status.ceimInterval,
+    status.cfiInterval
+  ];
+}

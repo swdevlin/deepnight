@@ -136,3 +136,6 @@ td.logreset {
   cursor: pointer;
 }
 
+div.topspacing {
+  padding-top: 4px;
+}

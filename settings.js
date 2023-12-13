@@ -23,7 +23,7 @@ Hooks.once("init", async () => {
       operations: { dei: 7, crew: 132},
       engineering: { dei: 7, crew: 195},
       cfiInterval: 0,
-      ceimInterval: 0,
+      ceiInterval: 0,
       ceimInterval: 0,
     }
   });
