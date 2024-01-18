@@ -27,6 +27,10 @@
           value="{{ceimInterval}}"
         />
         <span id="ceim-interval"><i class="fa-solid fa-dice"></i></span>
+        &nbsp;
+        <span id="dnr-ceimChangeCheck">
+          <i class="fa-solid fa-up-down"></i><i class="fa-solid fa-dice"></i>
+        </span>
       </div>
       <div class="form-group">
         <label for="ceiInterval">Days until CEI: </label>
@@ -43,7 +47,7 @@
         <span id="cei-interval"><i class="fa-solid fa-dice"></i></span>
       </div>
       <div class="form-group">
-        <label for="ceiInterval">Days until CFI: </label>
+        <label for="cfiInterval">Days until CFI: </label>
         <input
           type="number"
           data-dtype="Number"
@@ -54,7 +58,11 @@
           class="form-fields dnr-valueinput"
           value="{{cfiInterval}}"
         />
-        <span id="cfi-interval"><i class="fa-solid fa-dice"></i></span>
+        <span id="cfi-interval" class="clickable"><i class="fa-solid fa-dice"></i></span>
+        &nbsp;
+        <span id="dnr-fatigueChangeCheck" class="clickable">
+          <i class="fa-solid fa-up-down"></i><i class="fa-solid fa-dice"></i>
+        </span>
       </div>
     </div>
   </section>
@@ -245,7 +253,7 @@
             <div class="dnr-panel dnr-deipanel dei-check"
                  data-tooltip="skill check"
                  data-dei="{{mission.dei}}"
-                 data-label="Mission DEI check"
+                 data-label="Mission"
             >
               <div class="dnr-panel-text">
                 <p>
@@ -262,6 +270,9 @@
                 </p>
                 <p class="clickable">
                   <i class="fa-solid fa-dice"></i>
+                  <span class="improvement-check" data-tooltip="improvement check">
+                    &nbsp;&nbsp;<i class="fa-solid fa-up-down"></i>
+                  </span>
                 </p>
               </div>
             </div>
@@ -292,7 +303,7 @@
               class="dnr-panel dnr-deipanel dei-check"
               data-tooltip="skill check"
               data-dei="{{flight.dei}}"
-              data-label="Flight DEI check"
+              data-label="Flight"
             >
               <div class="dnr-panel-text">
                 <p>
@@ -309,6 +320,9 @@
                 </p>
                 <p class="clickable">
                   <i class="fa-solid fa-dice"></i>
+                  <span class="improvement-check" data-tooltip="improvement check">
+                    &nbsp;&nbsp;<i class="fa-solid fa-up-down"></i>
+                  </span>
                 </p>
               </div>
             </div>
@@ -342,7 +356,7 @@
               class="dnr-panel dnr-deipanel dei-check"
               data-tooltip="skill check"
               data-dei="{{operations.dei}}"
-              data-label="Operations DEI check"
+              data-label="Operations"
             >
               <div class="dnr-panel-text">
                 <p>
@@ -359,6 +373,9 @@
                 </p>
                 <p class="clickable">
                   <i class="fa-solid fa-dice"></i>
+                  <span class="improvement-check" data-tooltip="improvement check">
+                    &nbsp;&nbsp;<i class="fa-solid fa-up-down"></i>
+                  </span>
                 </p>
               </div>
             </div>
@@ -389,7 +406,7 @@
               class="dnr-panel dnr-deipanel dei-check"
               data-tooltip="skill check"
               data-dei="{{engineering.dei}}"
-              data-label="Engineering DEI check"
+              data-label="Engineering"
             >
               <div class="dnr-panel-text">
                 <p>
@@ -406,6 +423,9 @@
                 </p>
                 <p class="clickable">
                   <i class="fa-solid fa-dice"></i>
+                  <span class="improvement-check" data-tooltip="improvement check">
+                    &nbsp;&nbsp;<i class="fa-solid fa-up-down"></i>
+                  </span>
                 </p>
               </div>
             </div>
@@ -440,7 +460,6 @@
       <button id="dnr-watch"><i class="fa-regular fa-watch"></i> {{localize "DEEPNIGHT.watchButtonTitle"}}</button>
       <button id="dnr-jump"><i class="fa-regular fa-calendar-week"></i> {{localize "DEEPNIGHT.jumpButtonTitle"}}</button>
       <button id="dnr-refuel"><i class="fa-regular fa-gas-pump"></i> {{localize "DEEPNIGHT.refuelButtonTitle"}}</button>
-      <button id="dnr-reset"><i class="fa-regular fa-undo"></i></button>
     </div>
   </section>
 </div>

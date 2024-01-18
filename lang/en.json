@@ -16,6 +16,7 @@
     "watchButtonTitle": "One watch passes",
     "refuelButtonTitle": "Refuel",
     "saveButtonTitle": "Save",
+    "leadershipEffect": "Leadership Effect",
     "RollDialog": {
       "RollDetails": "Roll Details",
       "Difficulty": "Difficulty",
@@ -55,6 +56,12 @@
       "crewTooltip": "Crew",
       "materials": "Materials",
       "materialsTooltip": "Materials"
+    },
+    "Messages": {
+      "CEIImprovement": "CEI can be improved by spending ${time} days.",
+      "CEIMCheck": "It is time for a CEIM check.",
+      "CFIIncrease": "CFI has increased by 1. Roll against CFI of ${cfi} to see if overall fatigue increases.",
+      "FatigueIncrease": "Fatigue level increases to <b>${label}</b> <i>(DM ${dm})</i>"
     }
   },
   "Simple": "Simple",

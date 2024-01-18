@@ -1,0 +1,27 @@
+<h3>{{label}}</h3>
+<h4>{{resolution}}</h4>
+<p>
+  <i class="fa-light fa-calendar-days"></i> <b>{{year}}.{{day}}</b><br/>
+  {{localize "DEEPNIGHT.daysOnMission"}}: <b>{{daysOnMission}}</b>
+</p>
+<div class="dice-roll">
+  <div class="dice-result">
+    <table>
+      <tbody>
+        <tr><th></th><th>Description</th><th class="centre">DM</th></tr>
+        <tr>
+          <td>Dice</td>
+          <td>{{dice}}</td>
+          <td class="centre">
+            {{#each diceRolled}}{{this}}{{#unless @last}}+{{/unless}}{{/each}}
+          </td>
+        </tr>
+        <tr>
+          <td>Leadership Effect</td>
+          <td></td>
+          <td class="centre">{{leadershipEffect}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

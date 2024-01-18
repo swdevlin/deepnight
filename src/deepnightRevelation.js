@@ -45,9 +45,6 @@ export class DeepnightRevelation extends Application {
       chiefFlightOfficer: null,
       chiefEngineeringOfficer: null,
     }
-
-    /** @type {Event} */
-    // this.eventListener;
   }
 
   static get defaultOptions() {
@@ -94,6 +91,18 @@ export class DeepnightRevelation extends Application {
       this.reset();
     });
 
+    html.on('click', '#dnr-ceimChangeCheck', (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      this.ceimChangeCheck(evt);
+    });
+
+    html.on('click', '#dnr-fatigueChangeCheck', (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      this.fatigueChangeCheck(evt);
+    });
+
     html.on('click', '#dnr-day', (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
@@ -115,8 +124,13 @@ export class DeepnightRevelation extends Application {
     html.on('click', '.dei-check', (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
+
       if (!evt.target.className.includes('dnr-valueinput') )
-        this.deiCheck(evt);
+        if (evt.target.className.includes('fa-up-down') || evt.target.className.includes('improvement-check'))
+          this.deiImprovementCheck(evt);
+        else
+          this.deiCheck(evt);
+
     });
 
     html.on('click', '.cei-check', (evt) => {
@@ -315,7 +329,7 @@ export class DeepnightRevelation extends Application {
     const dialogContent = await renderTemplate('modules/deepnight/src/templates/eiCheckDialog.hbs', data);
 
     const dialogOptions = {
-      title: label,
+      title: `${label} DEI check`,
       content: dialogContent,
       buttons: {
         ok: {
@@ -345,6 +359,210 @@ export class DeepnightRevelation extends Application {
     };
 
     new Dialog(dialogOptions).render(true);
+  }
+
+  async ceimChangeResult(leadershipEffect) {
+    let dice = `2d6 + ${leadershipEffect}`;
+    let roller = new Roll(dice);
+    await roller.evaluate({async: true});
+    const table = await fromUuid('Compendium.deepnight.ceim-changes.RollTable.mk8uoMv8lw617QI3');
+    const tableLookup = await table.roll({roll: roller});
+    roller = tableLookup.roll;
+
+    const diceRolled = [];
+    for (const r of roller.terms[0].results)
+      if (r.active)
+        diceRolled.push(r.result);
+    const data = {
+      label: 'CEIM Change Check',
+      leadershipEffect: leadershipEffect,
+      total: roller.total,
+      formula: dice,
+      diceRolled: diceRolled,
+      resolution: tableLookup.results[0].text,
+      result: roller.result,
+    };
+    const message = await renderTemplate('modules/deepnight/src/templates/ceimChangeMessage.hbs', data)
+
+    const rollMode = CONST.DICE_ROLL_MODES.PUBLIC;
+
+    await roller.toMessage(
+      {
+        flavor: message,
+        rollMode: rollMode,
+        flags: {
+          "core.canPopout": true,
+        }
+      },
+      {
+        rollMode: rollMode,
+      }
+    );
+  }
+
+  async ceimChangeCheck(evt) {
+    const data = {
+      leadershipEffect: 0,
+    };
+    const dialogContent = await renderTemplate('modules/deepnight/src/templates/ceimChangeDialog.hbs', data);
+
+    const dialogOptions = {
+      title: 'CEIM Change Check',
+      content: dialogContent,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-solid fa-dice"></i>',
+          label: "Roll",
+          callback: () => {
+            let leadershipDM = parseInt(document.getElementById("leadershipEffect").value, 10);
+            if (isNaN(leadershipDM))
+              leadershipDM = 0;
+            this.ceimChangeResult(leadershipDM);
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Cancel",
+        },
+      },
+      default: "ok",
+    };
+
+    new Dialog(dialogOptions).render(true);
+  }
+
+  async deiImprovementResult(label, division, leadershipEffect) {
+    let dice = `2d6 + ${leadershipEffect}`;
+    let roller = new Roll(dice);
+    await roller.evaluate({async: true});
+
+    let m;
+    if (roller.total > this[division].dei) {
+      this[division].dei += 1;
+      this.saveSettings();
+      m = `${label} DEI increased to ${this[division].dei}`
+    } else
+      m = `No increase in ${label} DEI`;
+
+    const diceRolled = [];
+    for (const r of roller.terms[0].results)
+      if (r.active)
+        diceRolled.push(r.result);
+
+    const data = {
+      label: `${label} DEI Improvement Check`,
+      leadershipEffect: leadershipEffect,
+      total: roller.total,
+      formula: dice,
+      diceRolled: diceRolled,
+      resolution: m,
+      result: roller.result,
+      year: this.year,
+      day: this.day,
+      daysOnMission: this.daysOnMission
+    };
+    const message = await renderTemplate('modules/deepnight/src/templates/deiImprovementMessage.hbs', data)
+
+    const rollMode = CONST.DICE_ROLL_MODES.PUBLIC;
+
+    await roller.toMessage(
+      {
+        flavor: message,
+        rollMode: rollMode,
+        flags: {
+          "core.canPopout": true,
+        }
+      },
+      {
+        rollMode: rollMode,
+      }
+    );
+  }
+
+
+  async deiImprovementCheck(evt) {
+    const label = evt.currentTarget.dataset.label;
+    const division = label.toLowerCase();
+    const data = {
+      leadershipEffect: 0,
+    };
+    const dialogContent = await renderTemplate('modules/deepnight/src/templates/ceimChangeDialog.hbs', data);
+
+    const dialogOptions = {
+      title: `${label} DEI Improvement Check`,
+      content: dialogContent,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-solid fa-dice"></i>',
+          label: "Roll",
+          callback: async () => {
+            let leadershipDM = parseInt(document.getElementById("leadershipEffect").value, 10);
+            if (isNaN(leadershipDM))
+              leadershipDM = 0;
+            await this.deiImprovementResult(label, division, leadershipDM);
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Cancel",
+        },
+      },
+      default: "ok",
+    };
+
+    new Dialog(dialogOptions).render(true);
+  }
+
+  async increaseFatigue() {
+    if (this.fatigue === 'not')
+      this.fatigue = 'fatigued';
+    else if (this.fatigue === 'fatigued')
+      this.fatigue = 'highly';
+    else if (this.fatigue === 'highly') {
+      this.fatigue = 'dangerously';
+      this.morale -= 1;
+    } else if (this.fatigue === 'dangerously') {
+      this.fatigue = 'exhausted';
+      let roller = new Roll('1d3');
+      await roller.evaluate({async: true});
+      this.morale -= roller.total;
+    } else if (this.fatigue === 'exhausted') {
+      this.fatigue = 'incapable';
+      let roller = new Roll('1d5');
+      await roller.evaluate({async: true});
+      this.morale -= roller.total;
+    }
+  }
+
+  async fatigueChangeCheck(evt) {
+    let dice = '2d6';
+    let roller = new Roll(dice);
+    await roller.evaluate({async: true});
+    let m;
+    if (roller.total >= this.cfi) {
+      m = 'No change to fatigue';
+    } else {
+      if (this.fatigue !== 'incapable') {
+        await this.increaseFatigue();
+        await this.saveSettings();
+        m = game.i18n.localize('DEEPNIGHT.Messages.FatigueIncrease');
+        m = m.replace('${label}', FatigueLevels[this.fatigue].label);
+        m = m.replace('${dm}', FatigueLevels[this.fatigue].dm);
+      } else
+        m = 'Fatigue is already at maximum';
+    }
+    const data = this.templateData();
+    data.message = m;
+    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
+
+    let chatData = {
+      user: game.userId,
+      speaker: ChatMessage.getSpeaker(),
+      content: message,
+      whisper: []
+    }
+    ChatMessage.create(chatData, {});
+
   }
 
   async ceiCheck(evt) {
@@ -440,6 +658,7 @@ export class DeepnightRevelation extends Application {
     this.ceimInterval = parseInt($('#ceimInterval').val(), 10);
     this.ceiInterval = parseInt($('#ceiInterval').val(), 10);
     this.cfiInterval = parseInt($('#cfiInterval').val(), 10);
+    this.cfi = parseInt($('#cfi').val(), 10);
     this.saveSettings();
   }
 
@@ -479,7 +698,8 @@ export class DeepnightRevelation extends Application {
   async sendCEIMessage() {
     const time = game.settings.get('deepnight', 'ceiTraining');
     const data = this.templateData();
-    data.message = `CEI can be improved by spending ${time} days.`;
+    const m = game.i18n.localize('DEEPNIGHT.Messages.CEIImprovement');
+    data.message = m.replace('${time}', time);
     const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
 
     let chatData = {
@@ -493,7 +713,7 @@ export class DeepnightRevelation extends Application {
 
   async sendCEIMMessage() {
     const data = this.templateData();
-    data.message = `It is time for a CEIM check.`;
+    data.message = game.i18n.localize('DEEPNIGHT.Messages.CEIMCheck');
     const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
 
     let chatData = {
@@ -507,8 +727,10 @@ export class DeepnightRevelation extends Application {
 
   async sendCFIMessage() {
     this.cfi += 1;
+    this.saveSettings();
     const data = this.templateData();
-    data.message = `CFI has increased by 1. Roll against CFI of ${this.cfi} to see if overall fatigue increases.`;
+    const m = game.i18n.localize('DEEPNIGHT.Messages.CFIIncrease');
+    data.message = m.replace('${cfi}', this.cfi);
     const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
 
     let chatData = {
