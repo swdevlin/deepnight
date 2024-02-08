@@ -1,0 +1,76 @@
+<form>
+  <section class="deepnight resources">
+    <div class="flexrow action-buttons">
+      <div title="Supplies">
+        <div>
+          <label for="supplies">
+            Supplies
+          </label>
+        </div>
+        <span class="dnr-spacer"><i class="fa-light fa-crate-apple"></i></span><b>{{supplies}}</b>
+      </div>
+      <div title="exotic materials">
+        <div><label for="exoticMaterials">Exotic Materials</label></div>
+        <span class="dnr-spacer"><i class="fa-light fa-sparkles"></i></span>
+        <b>{{exoticMaterials}}</b>
+      </div>
+      <div title="rare materials">
+        <div>
+          <label for="rareMaterials">Rare Materials</label>
+        </div>
+        <span class="dnr-spacer"><i class="fa-light fa-comet"></i></span>
+        <b>{{rareMaterials}}</b>
+      </div>
+      <div title="rare biologicals">
+        <div><label for="rareBiologicals">Rare Biologicals</label></div>
+        <span class="dnr-spacer"><i class="fa-light fa-dna"></i></span>
+        <b>{{rareBiologicals}}</b>
+      </div>
+    </div>
+  </section>
+  <table class="damages">
+    <thead>
+    <tr>
+      <th>Subsystem</th>
+      <th>Severity</th>
+      <th>Effect</th>
+      {{#if is_gm}}
+        <th colspan="3">Repair</th>
+      {{else}}
+        <th>Repair</th>
+      {{/if}}
+    </tr>
+    </thead>
+    <tbody>
+      {{#each items}}
+        <tr>
+          <td>{{this.subsystem}}</td>
+          <td>{{this.severity}}</td>
+          <td>{{this.description}}</td>
+          <td>
+            Personnel: {{this.personnel}}<br/>
+            Hours: {{this.hours}}<br/>
+            Supply Units: {{this.su}}<br/>
+            Rare/Exotic: {{this.rareMaterials}} or {{this.exoticMaterials}} <br/>
+          </td>
+          {{#if ../is_gm}}
+            <td class="repair" data-tooltip="repair damage" data-index="{{@index}}">
+              <i class="fa-regular fa-screwdriver-wrench"></i>
+            </td>
+            <td class="cancel-repair" data-tooltip="delete entry" data-index="{{@index}}">
+              <i class="fa-regular fa-trash-can-xmark"></i>
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+  <div class="flexrow action-buttons">
+    <button id="first"><i class="fa-solid fa-left-to-line"></i></button>
+    <button id="previous"><i class="fa-solid fa-left"></i></button>
+    <button id="next"><i class="fa-solid fa-right"></i></button>
+    <button id="last"><i class="fa-solid fa-right-to-line"></i></button>
+  </div>
+
+</form>

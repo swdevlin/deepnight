@@ -1,0 +1,70 @@
+<form>
+  <table class="repair-costs">
+    <thead>
+      <tr>
+        <th>Material</th>
+        <th>On Hand</th>
+        <th>Units Needed</th>
+        <th>Units Spent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Time</td>
+        <td></td>
+        <td>{{damage.hours}}</td>
+        <td>
+          <input
+            id="timeTaken"
+            type="number"
+            name="timeTaken"
+            value="{{damage.hours}}"
+            style="width: 8ch;"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>SUs</td>
+        <td>{{supplies}}</td>
+        <td>{{damage.su}}</td>
+        <td>
+          <input
+            id="supplyUnitsUsed"
+            type="number"
+            name="supplyUnitsUsed"
+            value="{{damage.su}}"
+            style="width: 8ch;"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Rare</td>
+        <td>{{rareMaterials}}</td>
+        <td>{{damage.rareMaterials}}</td>
+        <td>
+          <input
+            id="rareMaterialsUsed"
+            type="number"
+            name="rareMaterialsUsed"
+            value="{{damage.rareMaterials}}"
+            style="width: 8ch;"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Exotic</td>
+        <td>{{exoticMaterials}}</td>
+        <td>{{damage.exoticMaterials}}</td>
+        <td>
+          <input
+            id="exoticMaterialsUsed"
+            type="number"
+            name="exoticMaterialsUsed"
+            value="{{damage.exoticMaterials}}" style="width: 8ch;"
+          />
+        </td>
+      </tr>
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+</form>

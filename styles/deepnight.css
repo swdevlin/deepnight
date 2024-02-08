@@ -89,6 +89,10 @@ div.dnr-buttons {
   width: 60px !important;
 }
 
+.dnr-valueinput-small {
+  width: 40px !important;
+}
+
 .dnr-flagtext {
   font-size: 0.7rem;
   font-style: italic;
@@ -138,4 +142,31 @@ td.logreset {
 
 div.topspacing {
   padding-top: 4px;
+}
+
+table.damages td {
+  text-align: left;
+  font-size: 0.8em;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+td.cancel-repair {
+  cursor: pointer;
+}
+
+td.repair {
+  cursor: pointer;
+}
+
+table.repair-costs td {
+  text-align: left;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+table.repair-costs th {
+  text-align: left;
+  padding-left: 2px;
+  padding-right: 2px;
 }

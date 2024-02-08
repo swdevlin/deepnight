@@ -25,6 +25,7 @@ Hooks.once("init", async () => {
       cfiInterval: 0,
       ceiInterval: 0,
       ceimInterval: 0,
+      damagedSystems: []
     }
   });
 
@@ -97,6 +98,18 @@ Hooks.once("init", async () => {
     restricted: true,
     default: 1000
   });
+
+  await game.settings.register("deepnight", "reachJumps", {
+    name: game.i18n.localize('DEEPNIGHT.Settings.reachJumpsName'),
+    hint: game.i18n.localize('DEEPNIGHT.Settings.reachJumpsHint'),
+    scope: "world",
+    config: true,
+    type: Number,
+    restricted: true,
+    default: 4
+  });
+
+  // TODO: convert game time to watches
 
   await game.settings.register("deepnight", "history", {
     scope: "world",

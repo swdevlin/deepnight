@@ -64,6 +64,7 @@ export class HistoryDialog extends Application {
         ceiInterval: 21,
         ceimInterval: 22,
         cfiInterval: 23,
+        supplyUnitsPerDay: 24,
       }
     };
   }

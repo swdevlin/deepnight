@@ -9,6 +9,10 @@
         <span class="dnr-spacer">{{localize "DEEPNIGHT.daysOnMission"}}:</span>
         <b>{{daysOnMission}}</b>
       </div>
+      <div class="clickable" id="damagedSystems">
+        <span class="dnr-spacer"><i class="fa-regular fa-house-chimney-crack"></i></span>
+        Damage: {{damagedSystems.length}}
+      </div>
       <div class="clickable" id="history">
         <span class="dnr-spacer"><i class="fa-regular fa-rectangle-vertical-history"></i></span>History
       </div>
@@ -69,7 +73,7 @@
 
   <section class="deepnight resources">
     <header class="directory-header dnr-header">Resources</header>
-    <div class="flexrow action-buttons">
+    <div class="flexrow">
       <div title="Supplies">
         <div>
           <label for="supplies">
@@ -87,6 +91,17 @@
           class="form-fields dnr-valueinput"
           value="{{supplies}}"
         />
+        <span class="dnr-spacer"><i class="fa-light fa-calendar-minus"></i></span>
+        <input
+          type="number"
+          data-dtype="Number"
+          step="1"
+          id="supplyUnitsPerDay"
+          name="supplyUnitsPerDay"
+          placeholder="0"
+          class="form-fields dnr-valueinput-small"
+          value="{{supplyUnitsPerDay}}"
+        />/d
       </div>
       <div title="exotic materials">
         <div>
@@ -239,6 +254,9 @@
         </div>
       </div>
       <div>
+        <div class="flexrow action-buttons">
+          <button id="dnr-maintenance"><i class="fa-regular fa-screwdriver-wrench"></i> {{localize "DEEPNIGHT.maintenanceButtonTitle"}}</button>
+        </div>
       </div>
     </div>
   </section>
@@ -456,9 +474,10 @@
       <button id="dnr-save"><i class="fa-regular fa-cloud-arrow-up"></i> {{localize "DEEPNIGHT.saveButtonTitle"}}</button>
     </div>
     <div class="flexrow action-buttons">
+      <button id="dnr-reach"><i class="fa-regular fa-map"></i> {{localize "DEEPNIGHT.reachButtonTitle"}}</button>
+      <button id="dnr-jump"><i class="fa-regular fa-calendar-week"></i> {{localize "DEEPNIGHT.jumpButtonTitle"}}</button>
       <button id="dnr-day"><i class="fa-regular fa-calendar-day"></i> {{localize "DEEPNIGHT.dayButtonTitle"}}</button>
       <button id="dnr-watch"><i class="fa-regular fa-watch"></i> {{localize "DEEPNIGHT.watchButtonTitle"}}</button>
-      <button id="dnr-jump"><i class="fa-regular fa-calendar-week"></i> {{localize "DEEPNIGHT.jumpButtonTitle"}}</button>
       <button id="dnr-refuel"><i class="fa-regular fa-gas-pump"></i> {{localize "DEEPNIGHT.refuelButtonTitle"}}</button>
     </div>
   </section>

@@ -5,6 +5,8 @@ import {DeepnightRevelation} from "./src/deepnightRevelation.js";
 
 window.deepnightHistory = null;
 
+window.deepnightDamagedSystemsDialog = null;
+
 window.deepnightRevelation = new DeepnightRevelation({});
 
 Hooks.on('init', async function() {

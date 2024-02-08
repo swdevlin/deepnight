@@ -6,7 +6,9 @@ import {
   FatigueLevels,
   RollTypes, statusToLog
 } from "./helpers.js";
+import {maintenanceLookup} from "./maintenanceLookup.js";
 import {HistoryDialog} from "./historyDialog.js";
+import {DamageSystemsDialog} from "./damageSystemsDialog.js";
 
 export class DeepnightRevelation extends Application {
   static ID = 'deepnight';
@@ -34,6 +36,8 @@ export class DeepnightRevelation extends Application {
       cfiInterval: 0,
       ceiInterval: 0,
       ceimInterval: 0,
+      supplyUnitsPerDay: 1000,
+      damagedSystems: []
     };
     this.history = [];
     this.command = {
@@ -54,7 +58,7 @@ export class DeepnightRevelation extends Application {
       minimizable: true,
       resizable: false,
       width: 750,
-      height: 710,
+      height: 730,
       title: "Deepnight Revelation"
     })
   }
@@ -77,6 +81,12 @@ export class DeepnightRevelation extends Application {
       evt.stopPropagation();
       evt.preventDefault();
       this.jump();
+    });
+
+    html.on('click', '#dnr-reach', (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      this.reach();
     });
 
     html.on('click', '#dnr-refuel', (evt) => {
@@ -158,10 +168,22 @@ export class DeepnightRevelation extends Application {
       this.setCFIInterval();
     });
 
-    html.on('click', '#history', (evt) => {
+    html.on('click', '#history', async (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
-      this.showHistory();
+      await this.showHistory();
+    });
+
+    html.on('click', '#damagedSystems', async (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      await this.showDamagedSystems();
+    });
+
+    html.on('click', '#dnr-maintenance', async (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      await this.maintenanceCheck();
     });
 
   }
@@ -172,10 +194,24 @@ export class DeepnightRevelation extends Application {
     window.deepnightHistory.render(true);
   }
 
+  async showDamagedSystems() {
+    if (!window.deepnightDamagedSystemsDialog)
+      window.deepnightDamagedSystemsDialog = new DamageSystemsDialog().render(true);
+    else
+      window.deepnightDamagedSystemsDialog.render(true);
+  }
+
   async loadFromSettings() {
     this.status = await game.settings.get('deepnight', 'status');
+    if (this.status.damagedSystems === undefined)
+      this.status.damagedSystems = [];
     this.history = await game.settings.get('deepnight', 'history');
   }
+
+  get damagedSystems() { return this.status.damagedSystems; }
+
+  get supplyUnitsPerDay() { return this.status.supplyUnitsPerDay; }
+  set supplyUnitsPerDay(u) { this.status.supplyUnitsPerDay = u; }
 
   get year() { return this.status.year; }
   set year(y) { this.status.year = y; }
@@ -479,7 +515,6 @@ export class DeepnightRevelation extends Application {
     );
   }
 
-
   async deiImprovementCheck(evt) {
     const label = evt.currentTarget.dataset.label;
     const division = label.toLowerCase();
@@ -553,7 +588,7 @@ export class DeepnightRevelation extends Application {
     }
     const data = this.templateData();
     data.message = m;
-    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
+    const message = await renderTemplate('modules/deepnight/src/templates/messages/timelog.hbs', data)
 
     let chatData = {
       user: game.userId,
@@ -659,6 +694,7 @@ export class DeepnightRevelation extends Application {
     this.ceiInterval = parseInt($('#ceiInterval').val(), 10);
     this.cfiInterval = parseInt($('#cfiInterval').val(), 10);
     this.cfi = parseInt($('#cfi').val(), 10);
+    this.supplyUnitsPerDay = parseInt($('#supplyUnitsPerDay').val(), 10);
     this.saveSettings();
   }
 
@@ -685,6 +721,8 @@ export class DeepnightRevelation extends Application {
       ceiInterval: this.ceiInterval,
       ceimInterval: this.ceimInterval,
       cfiInterval: this.cfiInterval,
+      supplyUnitsPerDay: this.supplyUnitsPerDay,
+      damagedSystems: this.damagedSystems,
     };
 
     data.mission.deiDM = computeDM(data.mission.dei);
@@ -700,7 +738,7 @@ export class DeepnightRevelation extends Application {
     const data = this.templateData();
     const m = game.i18n.localize('DEEPNIGHT.Messages.CEIImprovement');
     data.message = m.replace('${time}', time);
-    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
+    const message = await renderTemplate('modules/deepnight/src/templates/messages/timelog.hbs', data)
 
     let chatData = {
       user: game.userId,
@@ -714,7 +752,7 @@ export class DeepnightRevelation extends Application {
   async sendCEIMMessage() {
     const data = this.templateData();
     data.message = game.i18n.localize('DEEPNIGHT.Messages.CEIMCheck');
-    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
+    const message = await renderTemplate('modules/deepnight/src/templates/messages/timelog.hbs', data)
 
     let chatData = {
       user: game.userId,
@@ -731,7 +769,7 @@ export class DeepnightRevelation extends Application {
     const data = this.templateData();
     const m = game.i18n.localize('DEEPNIGHT.Messages.CFIIncrease');
     data.message = m.replace('${cfi}', this.cfi);
-    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
+    const message = await renderTemplate('modules/deepnight/src/templates/messages/timelog.hbs', data)
 
     let chatData = {
       user: game.userId,
@@ -764,7 +802,7 @@ export class DeepnightRevelation extends Application {
       if (this.cfiInterval === 0)
         this.sendCFIMessage();
     }
-    this.supplies -= game.settings.get('deepnight', 'suppliesPerDay');
+    this.supplies -= this.supplyUnitsPerDay;
   }
 
   incWatch() {
@@ -781,7 +819,7 @@ export class DeepnightRevelation extends Application {
   async postTime(msg) {
     const data = this.templateData();
     data.message = msg;
-    const message = await renderTemplate('modules/deepnight/src/templates/timelog.hbs', data)
+    const message = await renderTemplate('modules/deepnight/src/templates/messages/timelog.hbs', data)
 
     let chatData = {
       user: game.userId,
@@ -792,7 +830,7 @@ export class DeepnightRevelation extends Application {
     ChatMessage.create(chatData, {});
   }
 
-  async jump() {
+  async jump(save=true) {
     for (let i=0; i < 6; i++)
       this.incDay();
     this.incWatch();
@@ -801,8 +839,108 @@ export class DeepnightRevelation extends Application {
     let watches = roller.total;
     for (let i=0; i < watches; i++)
       this.incWatch();
-    await this.postTime('Jump completed.');
+    if (save) {
+      await this.postTime('Jump completed.');
+      await this.saveSettings();
+    }
+  }
+
+  async resolveReach({jumps, supplyUnitsPerDay}) {
+    this.supplyUnitsPerDay = supplyUnitsPerDay;
+    for (let i = 0; i< jumps; i++) {
+      await this.jump(false);
+      if (i < jumps -1)
+        await this.refuel(false)
+    }
+
+    await this.postTime('Reach transit completed.');
     await this.saveSettings();
+  }
+
+  async reach() {
+    const data = {
+      reachSupplyUnits: this.supplyUnitsPerDay,
+      jumps: await game.settings.get('deepnight', 'reachJumps'),
+    };
+    const dialogContent = await renderTemplate('modules/deepnight/src/templates/reachDialog.hbs', data);
+
+    const dialogOptions = {
+      title: `Reach Transit`,
+      content: dialogContent,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-solid fa-map"></i>',
+          label: "Transit",
+          callback: async () => {
+            let supplyUnits = parseInt(document.getElementById("reachSupplyUnits").value, 10);
+            let jumps = parseInt(document.getElementById("reachJumps").value, 10);
+            await this.resolveReach({supplyUnitsPerDay: supplyUnits, jumps: jumps});
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Cancel",
+        },
+      },
+      default: "ok",
+    };
+
+    new Dialog(dialogOptions).render(true);
+  }
+
+  async resolveMaintenanceCheck({yearsDM, hullDM, otherDM, substandardMaintenance, veryLittleMaintenance, noOverhaul}) {
+    let dice = `2d6 + ${yearsDM} + ${hullDM} + ${otherDM}`;
+    if (substandardMaintenance)
+      dice += ' +2';
+    if (veryLittleMaintenance)
+      dice += ' +4';
+    if (noOverhaul)
+      dice += ' +2';
+    let roller = new Roll(dice);
+    await roller.evaluate({async: true});
+    const results = await maintenanceLookup(roller.total);
+    if (results.length > 0) {
+      this.status.damagedSystems.push(...results);
+      this.saveSettings();
+    }
+  }
+
+  async maintenanceCheck() {
+    const data = {
+      yearsInVoyage: Math.floor(this.daysOnMission / 365),
+      hullDamage: 0,
+    };
+    const dialogContent = await renderTemplate('modules/deepnight/src/templates/maintenanceDialog.hbs', data);
+
+    const dialogOptions = {
+      title: `Reach Maintenance Check`,
+      content: dialogContent,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-light fa-screwdriver-wrench"></i>',
+          label: "Check",
+          callback: async () => {
+            const maintenanceData = {
+              // maintenanceEffect: parseInt(document.getElementById("maintenanceEffect").value, 10),
+              yearsDM: parseInt(document.getElementById("yearsDM").value, 10),
+              hullDM: parseInt(document.getElementById("hullDM").value, 10),
+              otherDM: parseInt(document.getElementById("otherDM").value, 10),
+              substandardMaintenance: document.getElementById('substandardMaintenance').checked,
+              veryLittleMaintenance: document.getElementById('veryLittleMaintenance').checked,
+              noOverhaul: document.getElementById('noOverhaul').checked,
+            };
+            await this.resolveMaintenanceCheck(maintenanceData);
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Cancel",
+        },
+      },
+      default: "ok",
+    };
+
+    new Dialog(dialogOptions).render(true);
   }
 
   fuelTime = () => {
@@ -825,14 +963,16 @@ export class DeepnightRevelation extends Application {
     return { days, watches };
   };
 
-  async refuel() {
+  async refuel(save=true) {
     const time = this.fuelTime();
     for (let i=0; i<time.days; i++)
       this.incDay();
     for (let i=0; i<time.watches; i++)
       this.incWatch();
-    await this.saveSettings();
-    await this.postTime('Deepnight Revelation has been refueled');
+    if (save) {
+      await this.saveSettings();
+      await this.postTime('Deepnight Revelation has been refueled');
+    }
   }
 
   async reset() {

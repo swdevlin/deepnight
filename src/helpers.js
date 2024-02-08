@@ -111,6 +111,11 @@ export const logToStatus = (status, log) => {
   status.ceiInterval = log[21];
   status.ceimInterval = log[22];
   status.cfiInterval = log[23];
+
+  if (log[24])
+    status.damagedSystems = log[24];
+  else
+    status.damagedSystems = [];
 }
 
 export const statusToLog = (status) => {
@@ -138,6 +143,7 @@ export const statusToLog = (status) => {
     status.fatigue,
     status.ceiInterval,
     status.ceimInterval,
-    status.cfiInterval
+    status.cfiInterval,
+    status.damagedSystems
   ];
 }

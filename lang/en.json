@@ -14,6 +14,9 @@
     "shipButtonTitle": "Deepnight Revelation console",
     "watchButtonName": "Watch",
     "watchButtonTitle": "One watch passes",
+    "reachButtonName": "Reach",
+    "maintenanceButtonTitle": "Maintenance",
+    "reachButtonTitle": "Reach transit",
     "refuelButtonTitle": "Refuel",
     "saveButtonTitle": "Save",
     "leadershipEffect": "Leadership Effect",
@@ -47,7 +50,9 @@
       "ceiIntervalName": "CEI Interval",
       "ceiIntervalHint": "The number of days until crew training can be performed",
       "ceiTrainingName": "CEI Training",
-      "ceiTrainingHint": "The number of days it takes to do crew training"
+      "ceiTrainingHint": "The number of days it takes to do crew training",
+      "reachJumpsName": "Reach Jumps",
+      "reachJumpsHint": "The default number of jumps per reach"
     },
     "Tabs": {
       "calendar": "Calendar",

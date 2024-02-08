@@ -1,0 +1,41 @@
+<form>
+  <fieldset>
+    <div class="form-group">
+      <label>Maintenance check effect (Average CEI)
+        <input id="maintenanceEffect" type="number" name="maintenanceEffect" value="0" placeholder="0" style="width: 8ch;"/>
+      </label>
+    </div>
+    <div class="form-group">
+      <label>Years into voyage
+        <input id="yearsDM" type="number" name="yearsDM" value="{{yearsInVoyage}}" placeholder="0" style="width: 8ch;"/>
+      </label>
+    </div>
+    <div class="form-group">
+      <label>Damage to Hull
+        <input id="hullDM" type="number" name="hullDM" value="{{hullDamage}}" placeholder="0" style="width: 8ch;"/>
+      </label>
+    </div>
+    <div class="form-group">
+      <label>{{localize "TWODSIX.Chat.Roll.OtherModifiers"}}
+        <input id="otherDM" type="number" name="otherDM" value="{{0}}" placeholder="0" style="width: 8ch;"/>
+      </label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <div class="form-group">
+      <label>Substandard maintenance
+        <input id="substandardMaintenance" type="checkbox" class="checkbox" name="substandardMaintenance" data-dtype="Boolean" />
+      </label>
+    </div>
+    <div class="form-group">
+      <label>Very little maintenance
+        <input id="veryLittleMaintenance" type="checkbox" class="checkbox" name="veryLittleMaintenance" data-dtype="Boolean" />
+      </label>
+    </div>
+    <div class="form-group">
+      <label>No overhaul in the last 24 months
+        <input id="noOverhaul" type="checkbox" class="checkbox" name="noOverhaul" data-dtype="Boolean" />
+      </label>
+    </div>
+  </fieldset>
+</form>

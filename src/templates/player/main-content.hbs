@@ -9,6 +9,10 @@
         <span class="dnr-spacer">{{localize "DEEPNIGHT.daysOnMission"}}:</span>
         <b>{{daysOnMission}}</b>
       </div>
+      <div class="clickable">
+        <span class="dnr-spacer"><i class="fa-regular fa-house-chimney-crack"></i></span>
+        Damage: {{damagedSystems.length}}
+      </div>
       <div class="clickable" id="history">
         <span class="dnr-spacer"><i class="fa-regular fa-rectangle-vertical-history"></i></span>History
       </div>
@@ -35,8 +39,8 @@
             Supplies
           </label>
         </div>
-        <span class="dnr-spacer"><i class="fa-light fa-crate-apple"></i></span>
-        <b>{{supplies}}</b>
+        <span class="dnr-spacer"><i class="fa-light fa-crate-apple"></i></span><b>{{supplies}}</b>
+        <span class="dnr-spacer"><i class="fa-light fa-calendar-minus"></i></span><b>{{supplyUnitsPerDay}}</b>/d
       </div>
       <div title="exotic materials">
         <div><label for="exoticMaterials">Exotic Materials</label></div>
