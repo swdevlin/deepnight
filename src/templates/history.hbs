@@ -7,7 +7,9 @@
       <th>Supplies</th>
       <th>CFI</th>
       {{#if is_gm}}
-      <th colspan="2">actions</th>
+        <th colspan="4">Actions</th>
+      {{else}}
+        <th>Actions</th>
       {{/if}}
     </tr>
     </thead>
@@ -18,9 +20,11 @@
           <td>{{this.[3]}}</td>
           <td>{{this.[5]}}</td>
           <td>{{this.[9]}}</td>
+          <td class="log-view" data-tooltip="View entry" data-index="{{@index}}"><i class="fa-solid fa-magnifying-glass"></i></td>
           {{#if ../is_gm}}
-          <td class="logview" data-index="{{@index}}"><i class="fa-solid fa-magnifying-glass"></i></td>
-          <td class="logreset" data-index="{{@index}}"><i class="fa-solid fa-rotate-left"></i></td>
+            <td class="log-reset" data-tooltip="Revert game state to entry" data-index="{{@index}}"><i class="fa-solid fa-rotate-left"></i></td>
+            <td class="log-delete" data-tooltip="Delete this entry" data-index="{{@index}}"><i class="fa-regular fa-trash"></i></td>
+            <td class="log-delete-below" data-tooltip="Delete this entry and below" data-index="{{@index}}"><i class="fa-regular fa-layer-minus"></i></td>
           {{/if}}
         </tr>
       {{/each}}

@@ -107,17 +107,28 @@ export class HistoryDialog extends Application {
       }
     });
 
-    html.on('click', '.logview', (evt) => {
+    html.on('click', '.log-view', (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
       this.viewEntry(evt);
     });
 
-    // track reset
-    html.on('click', '.logreset', (evt) => {
+    html.on('click', '.log-reset', (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
       this.resetEntry(evt);
+    });
+
+    html.on('click', '.log-delete', async (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      await this.deleteEntry(evt);
+    });
+
+    html.on('click', '.log-delete-below', async (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      await this.deleteEntryAndBelow(evt);
     });
 
   }
@@ -155,5 +166,63 @@ export class HistoryDialog extends Application {
     await game.settings.set('deepnight', 'history', this.history);
     await game.settings.set('deepnight', 'status', status);
     this.redraw();
+  }
+
+  async deleteEntry(evt) {
+    const index = parseInt(evt.currentTarget.dataset.index, 10);
+    const offset = this.page * this.pageSize + index;
+
+    const dialogContent = "<p>Do you want to delete this entry? This action cannot be undone.</p>";
+    const dialogOptions = {
+      title: "Delete Entry",
+      content: dialogContent,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-regular fa-trash"></i>',
+          label: "Trash Entry",
+          callback: async () => {
+            this.history.splice(offset, 1);
+            await game.settings.set('deepnight', 'history', this.history);
+            this.redraw();
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "OK",
+        },
+      },
+      default: "cancel",
+    };
+
+    new Dialog(dialogOptions).render(true);
+  }
+
+  async deleteEntryAndBelow(evt) {
+    const index = parseInt(evt.currentTarget.dataset.index, 10);
+    const offset = this.page * this.pageSize + index;
+
+    const dialogContent = "<p>Do you want to delete this entry and all previous entries? This action cannot be undone.</p>";
+    const dialogOptions = {
+      title: "Delete Entry and Below",
+      content: dialogContent,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-regular fa-layer-minus"></i>',
+          label: "Delete Entries",
+          callback: async () => {
+            this.history.splice(offset);
+            await game.settings.set('deepnight', 'history', this.history);
+            this.redraw();
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "OK",
+        },
+      },
+      default: "cancel",
+    };
+
+    new Dialog(dialogOptions).render(true);
   }
 }
