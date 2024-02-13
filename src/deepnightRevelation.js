@@ -138,9 +138,10 @@ export class DeepnightRevelation extends Application {
       if (!evt.target.className.includes('dnr-valueinput') )
         if (evt.target.className.includes('fa-up-down') || evt.target.className.includes('improvement-check'))
           this.deiImprovementCheck(evt);
+        else if (evt.target.className.includes('fa-dice-d6') || evt.target.className.includes('effect-check'))
+          this.deiEffectCheck(evt);
         else
           this.deiCheck(evt);
-
     });
 
     html.on('click', '.cei-check', (evt) => {
@@ -348,6 +349,68 @@ export class DeepnightRevelation extends Application {
     );
   }
 
+  async deiEffectCheckResult(dei, difficulty, rollType, otherDM, rollMode, label, fatigue, flags) {
+    let dice = RollTypes[rollType].dice;
+    dice += `+ ${otherDM}`;
+    dice += `+ ${ceiTaskDM(dei + this.ceim)}`;
+    dice += `+ ${Difficulties[difficulty].mod}`;
+    dice += `+ ${FatigueLevels[fatigue].dm}`;
+    for (const id of Object.keys(flags))
+      dice += `+ ${flags[id]}`
+    let roller = new Roll(dice);
+    await roller.evaluate({async: true});
+
+    const resultFlags = [];
+    for (const ceiMod of CEIRollModifiers)
+      if (ceiMod.id in flags)
+        resultFlags.push(ceiMod);
+
+    const diceRolled = [];
+    for (const r of roller.terms[0].results)
+      if (r.active)
+        diceRolled.push(r.result);
+    const data = {
+      difficulty: Difficulties[difficulty],
+      label: label,
+      total: roller.total,
+      rollType: rollType,
+      formula: dice,
+      dice: RollTypes[rollType].dice,
+      diceRolled: diceRolled,
+      dei: dei,
+      otherDM: otherDM,
+      ceim: this.ceim,
+      ceiDM: ceiTaskDM(dei + this.ceim),
+      resolution: `Effect ${roller.total - 8}`,
+      result: roller.result,
+      flags: resultFlags,
+      fatigue: FatigueLevels[fatigue]
+    };
+    const message = await renderTemplate('modules/deepnight/src/templates/eicheck.hbs', data)
+
+    if (rollMode === "gm")
+      rollMode = CONST.DICE_ROLL_MODES.PRIVATE;
+    else if (rollMode === "blind")
+      rollMode = CONST.DICE_ROLL_MODES.BLIND;
+    else if (rollMode === "self")
+      rollMode = CONST.DICE_ROLL_MODES.SELF;
+    else
+      rollMode = CONST.DICE_ROLL_MODES.PUBLIC;
+
+    await roller.toMessage(
+      {
+        flavor: message,
+        rollMode: rollMode,
+        flags: {
+          "core.canPopout": true,
+        }
+      },
+      {
+        rollMode: rollMode,
+      }
+    );
+  }
+
   async deiCheck(evt) {
     const label = evt.currentTarget.dataset.label;
     const dei = parseInt(evt.currentTarget.dataset.dei, 10);
@@ -365,7 +428,7 @@ export class DeepnightRevelation extends Application {
     const dialogContent = await renderTemplate('modules/deepnight/src/templates/eiCheckDialog.hbs', data);
 
     const dialogOptions = {
-      title: `${label} DEI check`,
+      title: `${label}`,
       content: dialogContent,
       buttons: {
         ok: {
@@ -384,6 +447,55 @@ export class DeepnightRevelation extends Application {
               if (document.getElementById(`cei.${key.id}`).checked)
                 flags[key.id] = key.dm;
             this.deiCheckResult(dei, difficulty, rollType, otherDM, rollMode, label, fatigue, flags);
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Cancel",
+        },
+      },
+      default: "ok",
+    };
+
+    new Dialog(dialogOptions).render(true);
+  }
+
+  async deiEffectCheck(evt) {
+    const label = evt.currentTarget.dataset.label;
+    const dei = parseInt(evt.currentTarget.dataset.dei, 10);
+
+    const data = {
+      difficulties: Difficulties,
+      dei: dei,
+      difficulty: "Average",
+      rollType: "normal",
+      rollMode: "public",
+      ceiModifiers: CEIRollModifiers,
+      fatigueLevels: FatigueLevels,
+      fatigue: this.fatigue,
+    };
+    const dialogContent = await renderTemplate('modules/deepnight/src/templates/eiCheckDialog.hbs', data);
+
+    const dialogOptions = {
+      title: `${label}`,
+      content: dialogContent,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-solid fa-dice"></i>',
+          label: "Roll",
+          callback: () => {
+            const difficulty = document.getElementById("difficulty").value;
+            let otherDM = parseInt(document.getElementById("otherDM").value, 10);
+            if (isNaN(otherDM))
+              otherDM = 0;
+            const rollType = document.getElementById("rollType").value;
+            const rollMode = document.getElementById("rollMode").value;
+            const fatigue = document.getElementById("fatigue").value;
+            const flags = {};
+            for (const key of CEIRollModifiers)
+              if (document.getElementById(`cei.${key.id}`).checked)
+                flags[key.id] = key.dm;
+            this.deiEffectCheckResult(dei, difficulty, rollType, otherDM, rollMode, label, fatigue, flags);
           },
         },
         cancel: {

@@ -1,7 +1,6 @@
 {
   "DEEPNIGHT": {
-    "buttonName": "Deepnight",
-    "buttonTitle": "Deepnight Revelation",
+    "actorButton": "Deepnight Revelation",
     "commandButtonName": "Command",
     "commandButtonTitle": "Deepnight Revelation command",
     "dayButtonName": "Day",

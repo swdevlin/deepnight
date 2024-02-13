@@ -170,3 +170,11 @@ table.repair-costs th {
   padding-left: 2px;
   padding-right: 2px;
 }
+
+.improvement-check {
+  padding-left: 6px;
+}
+
+.effect-check {
+  padding-left: 6px;
+}
