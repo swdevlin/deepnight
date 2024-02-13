@@ -2,8 +2,8 @@
   "id": "deepnight",
   "title": "Deepnight Revelation Campaign Tracker",
   "description": "A module to keep track the various numbers used in the Deepnight Revelation campaign by Mongoose Publishing.",
-  "version": "0.7.0",
-  "manifestPlusVersion": "0.7.0",
+  "version": "0.7.1",
+  "manifestPlusVersion": "0.7.1",
   "authors": [
     {
       "id": "RadioFreeWABA",
