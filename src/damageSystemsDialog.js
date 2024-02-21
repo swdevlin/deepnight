@@ -11,7 +11,7 @@ export class DamageSystemsDialog extends PagedTableDialog {
       resizable: false,
       width: 760,
       height: 720,
-      title: "Damaged Systems"
+      title: game.i18n.localize('DEEPNIGHT.DamagedSystemsDialog.Title')
     })
   }
 
@@ -51,12 +51,12 @@ export class DamageSystemsDialog extends PagedTableDialog {
     const dialogContent = await renderTemplate('modules/deepnight/src/templates/repairDialog.hbs', data);
 
     const dialogOptions = {
-      title: 'Repair Damage',
+      title: game.i18n.localize('DEEPNIGHT.RepairDialog.Title'),
       content: dialogContent,
       buttons: {
         ok: {
           icon: '<i class="fa-regular fa-screwdriver-wrench"></i>',
-          label: "Repair",
+          label: game.i18n.localize('DEEPNIGHT.RepairDialog.Repair'),
           callback: async () => {
             let timeTaken = parseInt(document.getElementById("timeTaken").value, 10);
             while (timeTaken >= 24) {
@@ -78,7 +78,7 @@ export class DamageSystemsDialog extends PagedTableDialog {
         },
         cancel: {
           icon: '<i class="fas fa-times"></i>',
-          label: "Cancel",
+          label: game.i18n.localize('DEEPNIGHT.Cancel'),
         },
       },
       default: "ok",

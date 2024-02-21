@@ -952,7 +952,7 @@ export class DeepnightRevelation extends Application {
     for (let i=0; i < watches; i++)
       this.incWatch();
     if (save) {
-      await this.postTime('Jump completed.');
+      await this.postTime(game.i18n.localize('DEEPNIGHT.JumpCompleted'));
       await this.saveSettings();
     }
   }
@@ -965,7 +965,7 @@ export class DeepnightRevelation extends Application {
         await this.refuel(false)
     }
 
-    await this.postTime('Reach transit completed.');
+    await this.postTime(game.i18n.localize('DEEPNIGHT.ReachTransitCompleted'));
     await this.saveSettings();
   }
 
@@ -977,7 +977,7 @@ export class DeepnightRevelation extends Application {
     const dialogContent = await renderTemplate('modules/deepnight/src/templates/reachDialog.hbs', data);
 
     const dialogOptions = {
-      title: `Reach Transit`,
+      title: game.i18n.localize('DEEPNIGHT.ReachTransitDialogTitle'),
       content: dialogContent,
       buttons: {
         ok: {
@@ -1025,7 +1025,7 @@ export class DeepnightRevelation extends Application {
     const dialogContent = await renderTemplate('modules/deepnight/src/templates/maintenanceDialog.hbs', data);
 
     const dialogOptions = {
-      title: `Reach Maintenance Check`,
+      title: game.i18n.localize('DEEPNIGHT.ReachMaintenanceCheckTitle'),
       content: dialogContent,
       buttons: {
         ok: {
@@ -1083,7 +1083,7 @@ export class DeepnightRevelation extends Application {
       this.incWatch();
     if (save) {
       await this.saveSettings();
-      await this.postTime('Deepnight Revelation has been refueled');
+      await this.postTime(game.i18n.localize('DEEPNIGHT.HasBeenRefueled'));
     }
   }
 
