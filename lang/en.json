@@ -93,6 +93,13 @@
     },
     "shipButtonName": "Console",
     "shipButtonTitle": "Deepnight Revelation console",
+    "ShipDialog": {
+      "CEIIntervalRoll": "Roll CEI interval",
+      "CEIMIntervalRoll": "Roll CEIM interval",
+      "CEIMChangeRoll": "Check for CEIM change",
+      "CFIIntervalRoll": "Roll CFI interval",
+      "FatigueChangeCheck": "Check for fatigue change"
+    },
     "Tabs": {
       "calendar": "Calendar",
       "calendarTooltip": "Calendar",
