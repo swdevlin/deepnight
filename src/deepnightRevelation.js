@@ -1034,9 +1034,9 @@ export class DeepnightRevelation extends Application {
           callback: async () => {
             const maintenanceData = {
               // maintenanceEffect: parseInt(document.getElementById("maintenanceEffect").value, 10),
-              yearsDM: parseInt(document.getElementById("yearsDM").value, 10),
-              hullDM: parseInt(document.getElementById("hullDM").value, 10),
-              otherDM: parseInt(document.getElementById("otherDM").value, 10),
+              yearsDM: parseInt(document.getElementById("yearsDM").value, 10) || 0,
+              hullDM: parseInt(document.getElementById("hullDM").value, 10) || 0,
+              otherDM: parseInt(document.getElementById("otherDM").value, 10) || 0,
               substandardMaintenance: document.getElementById('substandardMaintenance').checked,
               veryLittleMaintenance: document.getElementById('veryLittleMaintenance').checked,
               noOverhaul: document.getElementById('noOverhaul').checked,
