@@ -934,6 +934,7 @@ export class DeepnightRevelation extends Application {
   async postTime(msg, initialDays) {
     const data = this.templateData();
     data.message = msg;
+    data.hasLapsedDays = initialDays !== undefined;
     if (initialDays)
       data.lapsedDays = this.year * 365 + this.day - initialDays;
     const message = await renderTemplate('modules/deepnight/src/templates/messages/timelog.hbs', data);
