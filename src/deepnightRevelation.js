@@ -110,7 +110,7 @@ export class DeepnightRevelation extends Application {
     html.on('click', '#dnr-fatigueChangeCheck', (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
-      this.fatigueChangeCheck(evt);
+      this.fatigueChangeCheck();
     });
 
     html.on('click', '#dnr-day', (evt) => {
@@ -681,7 +681,7 @@ export class DeepnightRevelation extends Application {
     }
   }
 
-  async fatigueChangeCheck(evt) {
+  async fatigueChangeCheck() {
     let dice = '2d6';
     let roller = new Roll(dice);
     await roller.evaluate({async: true});
@@ -709,7 +709,6 @@ export class DeepnightRevelation extends Application {
       whisper: []
     }
     ChatMessage.create(chatData, {});
-
   }
 
   async ceiCheck(evt) {
@@ -777,11 +776,15 @@ export class DeepnightRevelation extends Application {
     this.redraw();
   }
 
-  async setCFIInterval() {
+  async calcCFIInterval() {
     const cfiIntervalRoll = await game.settings.get('deepnight', 'cfiInterval');
     const roller = new Roll(cfiIntervalRoll);
     await roller.evaluate({ async: true });
     this.cfiInterval = roller.total;
+
+  }
+  async setCFIInterval() {
+    await this.calcCFIInterval();
     this.redraw();
   }
 
@@ -928,10 +931,12 @@ export class DeepnightRevelation extends Application {
     return dayChanged;
   }
 
-  async postTime(msg) {
+  async postTime(msg, initialDays) {
     const data = this.templateData();
     data.message = msg;
-    const message = await renderTemplate('modules/deepnight/src/templates/messages/timelog.hbs', data)
+    if (initialDays)
+      data.lapsedTime = this.year * 365 + this.day - initialDays;
+    const message = await renderTemplate('modules/deepnight/src/templates/messages/timelog.hbs', data);
 
     let chatData = {
       user: game.userId,
@@ -958,14 +963,26 @@ export class DeepnightRevelation extends Application {
   }
 
   async resolveReach({jumps, supplyUnitsPerDay}) {
+    const startDays = this.year * 365 + this.day;
     this.supplyUnitsPerDay = supplyUnitsPerDay;
     for (let i = 0; i< jumps; i++) {
       await this.jump(false);
       if (i < jumps -1)
         await this.refuel(false)
     }
+    let lapsedDays = this.year * 365 + this.day - startDays;
+    let cfiIncreases = 0;
+    while (lapsedDays > 0) {
+      lapsedDays -= this.cfiInterval;
+      if (lapsedDays >= 0) {
+        cfiIncreases++;
+        await calcCFIInterval();
+      }
+    }
+    for (let i =0; i < cfiIncreases; i++)
+      await this.fatigueChangeCheck()
 
-    await this.postTime(game.i18n.localize('DEEPNIGHT.ReachTransitCompleted'));
+    await this.postTime(game.i18n.localize('DEEPNIGHT.ReachTransitCompleted'), startDays);
     await this.saveSettings();
   }
 
