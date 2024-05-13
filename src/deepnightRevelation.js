@@ -104,7 +104,7 @@ export class DeepnightRevelation extends Application {
     html.on('click', '#dnr-ceimChangeCheck', (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
-      this.ceimChangeCheck(evt);
+      this.ceimChangeCheck();
     });
 
     html.on('click', '#dnr-fatigueChangeCheck', (evt) => {
@@ -548,7 +548,7 @@ export class DeepnightRevelation extends Application {
     );
   }
 
-  async ceimChangeCheck(evt) {
+  async ceimChangeCheck() {
     const data = {
       leadershipEffect: 0,
     };
@@ -781,8 +781,8 @@ export class DeepnightRevelation extends Application {
     const roller = new Roll(cfiIntervalRoll);
     await roller.evaluate({ async: true });
     this.cfiInterval = roller.total;
-
   }
+
   async setCFIInterval() {
     await this.calcCFIInterval();
     this.redraw();
@@ -935,7 +935,7 @@ export class DeepnightRevelation extends Application {
     const data = this.templateData();
     data.message = msg;
     if (initialDays)
-      data.lapsedTime = this.year * 365 + this.day - initialDays;
+      data.lapsedDays = this.year * 365 + this.day - initialDays;
     const message = await renderTemplate('modules/deepnight/src/templates/messages/timelog.hbs', data);
 
     let chatData = {
@@ -970,17 +970,19 @@ export class DeepnightRevelation extends Application {
       if (i < jumps -1)
         await this.refuel(false)
     }
+
     let lapsedDays = this.year * 365 + this.day - startDays;
-    let cfiIncreases = 0;
     while (lapsedDays > 0) {
-      lapsedDays -= this.cfiInterval;
-      if (lapsedDays >= 0) {
-        cfiIncreases++;
-        await calcCFIInterval();
+      if (lapsedDays >= this.cfiInterval) {
+        lapsedDays -= this.cfiInterval;
+        this.cfi++;
+        await this.fatigueChangeCheck();
+        await this.calcCFIInterval();
+      } else {
+        this.cfiInterval -= lapsedDays;
+        lapsedDays = 0;
       }
     }
-    for (let i =0; i < cfiIncreases; i++)
-      await this.fatigueChangeCheck()
 
     await this.postTime(game.i18n.localize('DEEPNIGHT.ReachTransitCompleted'), startDays);
     await this.saveSettings();
