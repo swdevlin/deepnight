@@ -28,11 +28,11 @@ Hooks.on('updateSetting', async (setting, value, options) => {
   if (setting.key.startsWith('deepnight.'))
     await window.deepnightRevelation.loadFromSettings();
 
-    if (!setting.key.includes('history'))
-      window.deepnightRevelation.redraw();
+  if (!setting.key.includes('history'))
+    window.deepnightRevelation.redraw();
 
-    if (setting.key.includes('history') && window.deepnightHistory)
-      window.deepnightHistory.redraw();
+  if (setting.key.includes('history') && window.deepnightHistory)
+    window.deepnightHistory.redraw();
 });
 
 //noinspection JSUnusedLocalSymbols

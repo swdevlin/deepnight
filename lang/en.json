@@ -90,7 +90,13 @@
       "ceiTrainingName": "CEI Training",
       "ceiTrainingHint": "The number of days it takes to do crew training",
       "reachJumpsName": "Reach Jumps",
-      "reachJumpsHint": "The default number of jumps per reach"
+      "reachJumpsHint": "The default number of jumps per reach",
+      "suStorageName": "SU Storage space",
+      "suStorageHint": "Maximum SU units stored without using cargo space",
+      "suCargoSpaceName": "SUs/t cargo",
+      "suCargoSpaceHint": "Number of SUs per ton of cargo space",
+      "maxCargoSpaceName": "Max cargo space",
+      "maxCargoSpaceHint": "Total cargo space across all pods"
     },
     "shipButtonName": "Console",
     "shipButtonTitle": "Deepnight Revelation console",

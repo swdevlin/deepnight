@@ -109,6 +109,36 @@ Hooks.once("init", async () => {
     default: 4
   });
 
+  await game.settings.register("deepnight", "suStorage", {
+    name: game.i18n.localize('DEEPNIGHT.Settings.suStorageName'),
+    hint: game.i18n.localize('DEEPNIGHT.Settings.suStorageHint'),
+    scope: "world",
+    config: true,
+    type: Number,
+    restricted: true,
+    default: 200000
+  });
+
+  await game.settings.register("deepnight", "suCargoSpace", {
+    name: game.i18n.localize('DEEPNIGHT.Settings.suCargoSpaceName'),
+    hint: game.i18n.localize('DEEPNIGHT.Settings.suCargoSpaceHint'),
+    scope: "world",
+    config: true,
+    type: Number,
+    restricted: true,
+    default: 100
+  });
+
+  await game.settings.register("deepnight", "maxCargoSpace", {
+    name: game.i18n.localize('DEEPNIGHT.Settings.maxCargoSpaceName'),
+    hint: game.i18n.localize('DEEPNIGHT.Settings.maxCargoSpaceHint'),
+    scope: "world",
+    config: true,
+    type: Number,
+    restricted: true,
+    default: 149 + 419.8*2 + 14.4*2 + 841.6*2
+  });
+
   // TODO: convert game time to watches
 
   await game.settings.register("deepnight", "history", {

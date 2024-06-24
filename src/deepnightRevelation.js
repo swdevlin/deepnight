@@ -15,6 +15,8 @@ export class DeepnightRevelation extends Application {
 
   constructor(src, options = {}) {
     super(src, options);
+    this.maxCargoSpace = 0;
+    this.cargoSpaceUsed = 0;
     this.status = {
       year: 1105,
       day: 17,
@@ -207,6 +209,7 @@ export class DeepnightRevelation extends Application {
     if (this.status.damagedSystems === undefined)
       this.status.damagedSystems = [];
     this.history = await game.settings.get('deepnight', 'history');
+    await this.updateCargo();
   }
 
   get damagedSystems() { return this.status.damagedSystems; }
@@ -279,9 +282,22 @@ export class DeepnightRevelation extends Application {
     await game.settings.set('deepnight', 'history', this.history);
   }
 
+  async updateCargo() {
+    const space = await game.settings.get('deepnight', 'suCargoSpace');
+    const storage = await game.settings.get('deepnight', 'suStorage');
+    this.maxCargoSpace = await game.settings.get('deepnight', 'maxCargoSpace');
+
+    let cargo = 0;
+    cargo += (this.rareMaterials + this.rareBiologicals + this.exoticMaterials) / space;
+    if (this.supplies > storage)
+      cargo += (this.supplies - storage) / space;
+    this.cargoSpaceUsed = Math.ceil(cargo);
+  }
+
   async saveSettings() {
     await game.settings.set('deepnight', 'status', this.status);
     await this.saveHistory();
+    await this.updateCargo();
   }
 
   async deiCheckResult(dei, difficulty, rollType, otherDM, rollMode, label, fatigue, flags) {
@@ -839,13 +855,14 @@ export class DeepnightRevelation extends Application {
       cfiInterval: this.cfiInterval,
       supplyUnitsPerDay: this.supplyUnitsPerDay,
       damagedSystems: this.damagedSystems,
+      maxCargoSpace: this.maxCargoSpace,
+      cargoSpaceUsed: this.cargoSpaceUsed,
     };
 
     data.mission.deiDM = computeDM(data.mission.dei);
     data.flight.deiDM = computeDM(data.flight.dei);
     data.operations.deiDM = computeDM(data.operations.dei);
     data.engineering.deiDM = computeDM(data.engineering.dei);
-
     return data;
   }
 
