@@ -110,7 +110,7 @@ export class DeepnightRevelation extends Application {
     html.on('click', '#dnr-fatigueChangeCheck', (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
-      this.fatigueChangeCheck();
+      this.fatigueChangeCheck(true);
     });
 
     html.on('click', '#dnr-day', (evt) => {
@@ -681,7 +681,7 @@ export class DeepnightRevelation extends Application {
     }
   }
 
-  async fatigueChangeCheck() {
+  async fatigueChangeCheck(save) {
     let dice = '2d6';
     let roller = new Roll(dice);
     await roller.evaluate({async: true});
@@ -691,7 +691,8 @@ export class DeepnightRevelation extends Application {
     } else {
       if (this.fatigue !== 'incapable') {
         await this.increaseFatigue();
-        await this.saveSettings();
+        if (save)
+          await this.saveSettings();
         m = game.i18n.localize('DEEPNIGHT.Messages.FatigueIncrease');
         m = m.replace('${label}', FatigueLevels[this.fatigue].label);
         m = m.replace('${dm}', FatigueLevels[this.fatigue].dm);
@@ -880,7 +881,6 @@ export class DeepnightRevelation extends Application {
 
   async sendCFIMessage() {
     this.cfi += 1;
-    this.saveSettings();
     const data = this.templateData();
     const m = game.i18n.localize('DEEPNIGHT.Messages.CFIIncrease');
     data.message = m.replace('${cfi}', this.cfi);
@@ -966,7 +966,7 @@ export class DeepnightRevelation extends Application {
   async resolveReach({jumps, supplyUnitsPerDay}) {
     const startDays = this.year * 365 + this.day;
     this.supplyUnitsPerDay = supplyUnitsPerDay;
-    for (let i = 0; i< jumps; i++) {
+    for (let i = 0; i < jumps; i++) {
       await this.jump(false);
       if (i < jumps -1)
         await this.refuel(false)
@@ -985,8 +985,8 @@ export class DeepnightRevelation extends Application {
       }
     }
 
-    await this.postTime(game.i18n.localize('DEEPNIGHT.ReachTransitCompleted'), startDays);
     await this.saveSettings();
+    await this.postTime(game.i18n.localize('DEEPNIGHT.ReachTransitCompleted'), startDays);
   }
 
   async reach() {
