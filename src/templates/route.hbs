@@ -1,0 +1,28 @@
+<form>
+  <table class="route">
+    <thead>
+    <tr>
+      <th>{{localize "DEEPNIGHT.Date"}}</th>
+      <th>{{localize "DEEPNIGHT.Sector"}}</th>
+      <th>{{localize "DEEPNIGHT.Hex"}}</th>
+    </tr>
+    </thead>
+    <tbody>
+      {{#each route}}
+        <tr>
+          <td class="center">{{this.year}}.{{padDay this.day}}</td>
+          <td class="center">{{this.sector_name}}</td>
+          <td class="center">{{padHexAddress this.hex_x}}{{padHexAddress this.hex_y}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+  <div class="flexrow action-buttons">
+    <button id="route-first"><i class="fa-solid fa-left-to-line"></i></button>
+    <button id="route-previous"><i class="fa-solid fa-left"></i></button>
+    <button id="route-next"><i class="fa-solid fa-right"></i></button>
+    <button id="route-last"><i class="fa-solid fa-right-to-line"></i></button>
+  </div>
+
+</form>

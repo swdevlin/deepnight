@@ -1,0 +1,20 @@
+<form>
+  <fieldset>
+    <div class="form-group">
+      <label for="sector">{{localize "DEEPNIGHT.Sector"}}
+        {{#select currentSectorId}}
+          <select name="sector" id="sector">
+            {{#each sectors}}
+              <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+          </select>
+        {{/select}}
+      </label>
+    </div>
+    <div class="form-group">
+      <label for="hex">{{localize "DEEPNIGHT.Hex"}}
+        <input id="jumpHex" type="number" name="jumpHex" value="{{jumpHex}}" placeholder="" style="width: 8ch;"/>
+      </label>
+    </div>
+  </fieldset>
+</form>

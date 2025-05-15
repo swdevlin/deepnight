@@ -178,3 +178,8 @@ table.repair-costs th {
 .effect-check {
   padding-left: 6px;
 }
+
+td.center {
+  text-align: center;
+}
+

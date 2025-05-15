@@ -18,6 +18,19 @@ Hooks.on('init', async function() {
 
 });
 
+Handlebars.registerHelper('padHexAddress', (num) => {
+  return num < 10 ? '0' + num : num;
+});
+
+Handlebars.registerHelper('padDay', (num) => {
+  if (num < 10)
+    return '00' + num;
+  else if (num < 100)
+    return '0' + num;
+  else
+    return num;
+});
+
 Hooks.on('ready', async function() {
   window.deepnightRevelation.loadFromSettings();
 });

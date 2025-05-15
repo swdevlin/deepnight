@@ -8,6 +8,7 @@ import {
 } from "./helpers.js";
 import {maintenanceLookup} from "./maintenanceLookup.js";
 import {HistoryDialog} from "./historyDialog.js";
+import {RouteDialog} from "./routeDialog.js";
 import {DamageSystemsDialog} from "./damageSystemsDialog.js";
 
 export class DeepnightRevelation extends Application {
@@ -50,9 +51,76 @@ export class DeepnightRevelation extends Application {
       chiefOperationsOfficer: null,
       chiefFlightOfficer: null,
       chiefEngineeringOfficer: null,
+    };
+    this.sectors = [];
+    this.route = [];
+    this.fetchSectors();
+    this.fetchRoute();
+  }
+
+  async fetchRoute() {
+    try {
+      const response = await fetch("https://radiofreewaba.net/deepnight/data/route", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      this.route = (await response.json()).reverse();
+
+    } catch (error) {
+      console.error("Error fetching route:", error);
+      ui.notifications.error(`Call to fetch route failed: ${error.message}`);
     }
   }
 
+  currentSector() {
+    if (this.route.length === 0) {
+      return null;
+    }
+
+    const currentRoute = this.route[0];
+    return this.sectors.find(sector =>
+      sector.x === currentRoute.sector_x &&
+      sector.y === currentRoute.sector_y
+    );
+  }
+
+  currentHex() {
+    if (this.route.length === 0) {
+      return null;
+    }
+
+    const { hex_x, hex_y } = this.route[0];
+    return (hex_x < 10 ? '0' + hex_x : hex_x) + '' + (hex_y < 10 ? '0' + hex_y : hex_y);
+  }
+
+  async fetchSectors() {
+    try {
+      const response = await fetch("https://radiofreewaba.net/deepnight/data/sectors", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      this.sectors = (await response.json()).sort((a, b) => a.name.localeCompare(b.name));
+
+    } catch (error) {
+      console.error("Error making REST call:", error);
+      ui.notifications.error(`Call to fetch sectors Failed: ${error.message}`);
+    }
+
+  }
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: "deepnight",
@@ -189,12 +257,24 @@ export class DeepnightRevelation extends Application {
       await this.maintenanceCheck();
     });
 
+    html.on('click', '#dnr-route', async (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      await this.showRoute();
+    });
+
   }
 
   async showHistory() {
     if (!window.deepnightHistory)
       window.deepnightHistory = new HistoryDialog().render(true);
     window.deepnightHistory.render(true);
+  }
+
+  async showRoute() {
+    if (!window.routeHistory)
+      window.routeHistory = new RouteDialog().render(true);
+    window.routeHistory.render(true);
   }
 
   async showDamagedSystems() {
@@ -965,7 +1045,7 @@ export class DeepnightRevelation extends Application {
     ChatMessage.create(chatData, {});
   }
 
-  async jump(save=true) {
+  async doTheJump(save=true) {
     for (let i=0; i < 6; i++)
       this.incDay();
     this.incWatch();
@@ -980,13 +1060,83 @@ export class DeepnightRevelation extends Application {
     }
   }
 
+  async updateRoute(sectorId, jumpHex) {
+    const hexX = parseInt(jumpHex.slice(0, -2));
+    const hexY = parseInt(jumpHex.slice(-2));
+    const sector = this.sectors.find(s => s.id === sectorId);
+
+    const url = 'https://radiofreewaba.net/deepnight/data/route';
+    const data = {
+      sector_x: sector.x,
+      sector_y: sector.y,
+      year: this.year,
+      day: this.day,
+      ship_id: 1,
+      hex_x: hexX,
+      hex_y: hexY,
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Failed to update route:', error);
+      ui.notifications.error(`Failed to update route: ${error.message}`);
+    }
+  }
+
+  async jump(save=true) {
+    const dialogData = {
+      sectors: this.sectors,
+      currentSectorId: this.currentSector() ? this.currentSector().id : 0,
+      jumpHex: this.currentHex()
+    };
+
+    const content = await renderTemplate("modules/deepnight/src/templates/jumpDialog.hbs", dialogData);
+
+    new Dialog({
+      title: "Jump",
+      content: content,
+      buttons: {
+        yes: {
+          icon: '<i class="fas fa-check"></i>',
+          label: "Jump",
+          callback: async (html) => {
+            const sectorId = parseInt(html.find('#sector').val());
+            const jumpHex = html.find('#jumpHex').val();
+            await this.doTheJump(save);
+            await this.updateRoute(sectorId, jumpHex);
+            await this.fetchRoute();
+          }
+        },
+        no: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Cancel",
+          callback: () => {}
+        }
+      },
+      default: "yes"
+    }).render(true);
+  }
+
   async resolveReach({jumps, supplyUnitsPerDay}) {
     const startDays = this.year * 365 + this.day;
     this.supplyUnitsPerDay = supplyUnitsPerDay;
     for (let i = 0; i < jumps; i++) {
       await this.jump(false);
-      if (i < jumps -1)
-        await this.refuel(false)
+      if (i < jumps -1) {
+        await this.refuel(false);
+        await this.systemScan(true, false);
+      }
     }
 
     let lapsedDays = this.year * 365 + this.day - startDays;
@@ -1114,13 +1264,24 @@ export class DeepnightRevelation extends Application {
 
   async refuel(save=true) {
     const time = this.fuelTime();
-    for (let i=0; i<time.days; i++)
+    for (let i=0; i < time.days; i++)
       this.incDay();
-    for (let i=0; i<time.watches; i++)
+    for (let i=0; i < time.watches; i++)
       this.incWatch();
     if (save) {
       await this.saveSettings();
       await this.postTime(game.i18n.localize('DEEPNIGHT.HasBeenRefueled'));
+    }
+  }
+
+  async systemScan(whileRefueling=true, save=true) {
+    const roller = whileRefueling ? new Roll('3d2-2') : new Roll('3d2+2');
+    await roller.evaluate({ async: true });
+    for (let i=0; i < roller.total; i++)
+      this.incWatch();
+    if (save) {
+      await this.saveSettings();
+      await this.postTime(game.i18n.localize('DEEPNIGHT.NextSystemsScanned'));
     }
   }
 

@@ -20,12 +20,14 @@
       "SupplyUnits": "Supply Units",
       "Title": "Damaged Systems"
     },
+    "Date": "Date",
     "dayButtonName": "Day",
     "dayButtonTitle": "One day passes",
     "daysOnMission": "Days on mission",
     "ExoticMaterials": "Exotic Materials",
     "Fatigue": "Fatigue",
     "HasBeenRefueled": "Deepnight Revelation has been refueled",
+    "Hex": "Hex",
     "lapsedDays": "Lapsed days",
     "leadershipEffect": "Difficult Leadership (INT) Effect",
     "jumpButtonName": "Jump",
@@ -39,6 +41,7 @@
       "FatigueIncrease": "Fatigue level increases to <b>${label}</b> <i>(DM ${dm})</i>"
     },
     "missionDate": "Date",
+    "NextSystemsScanned": "Systems scan completed",
     "OK": "OK",
     "Normal": "Normal",
     "RareBiologicals": "Rare Biologicals",
@@ -48,6 +51,7 @@
     "ReachMaintenanceCheckTitle": "Reach Maintenance Check",
     "ReachTransitCompleted": "Reach transit completed.",
     "ReachTransitDialogTitle": "Reach Transit",
+    "routeButtonTitle": "Route",
     "refuelButtonTitle": "Refuel",
     "refuelSettingHint": "The number of days and watches to refuel. Example: 2d 1w means two days, one watch to refuel.",
     "refuelSettingName": "Time to refuel",
@@ -76,6 +80,7 @@
       "self": "Self Roll"
     },
     "saveButtonTitle": "Save",
+    "Sector": "Sector",
     "Settings": {
       "suppliesPerDayName": "Supply units per day",
       "suppliesPerDayHint": "The number of supply units used up per day.",
