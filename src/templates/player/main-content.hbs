@@ -2,19 +2,20 @@
   <section class="deepnight calendar">
     <div class="flexrow action-buttons">
       <div>
-        <span class="dnr-spacer"><i class="fa-light fa-calendar-days"></i></span>
-        <b>{{year}}.{{day}}.{{watch}}</b>
+        <span class="dnr-spacer">Location: <b>{{currentSector.name}} {{currentHex}}</b></span>
+        <span id="dnr-route" class="clickable" data-tooltip="Display route">
+            <i class="fa-regular fa-route"></i>
+        </span>
       </div>
       <div>
-        <span class="dnr-spacer">{{localize "DEEPNIGHT.daysOnMission"}}:</span>
-        <b>{{daysOnMission}}</b>
+        <span>{{localize "DEEPNIGHT.daysOnMission"}}: </span>
+        <b class="dnr-spacer">{{daysOnMission}}</b>
+        <span id="history" class="dnr-spacer clickable" data-tooltip="History">
+          <i class="fa-regular fa-rectangle-vertical-history"></i>
+        </span>
       </div>
-      <div class="clickable" id="damagedSystems">
-        <span class="dnr-spacer"><i class="fa-regular fa-house-chimney-crack"></i></span>
-        Damage: {{damagedSystems.length}}
-      </div>
-      <div class="clickable" id="history">
-        <span class="dnr-spacer"><i class="fa-regular fa-rectangle-vertical-history"></i></span>History
+      <div>
+        Date: <b>{{year}}-{{day}}.{{watch}}</b>
       </div>
     </div>
     <div class="flexrow action-buttons">
@@ -122,7 +123,10 @@
       </div>
       <div>
         <div class="flexrow action-buttons">
-          <button id="dnr-route"><i class="fa-regular fa-route"></i> {{localize "DEEPNIGHT.routeButtonTitle"}}</button>
+          <div class="clickable" id="damagedSystems">
+            <span class="dnr-spacer"><i class="fa-regular fa-house-chimney-crack"></i></span>
+            Damage: {{damagedSystems.length}}
+          </div>
         </div>
       </div>
     </div>

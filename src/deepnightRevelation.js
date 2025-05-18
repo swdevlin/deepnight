@@ -937,6 +937,8 @@ export class DeepnightRevelation extends Application {
       damagedSystems: this.damagedSystems,
       maxCargoSpace: this.maxCargoSpace,
       cargoSpaceUsed: this.cargoSpaceUsed,
+      currentSector: this.currentSector(),
+      currentHex: this.currentHex(),
     };
 
     data.mission.deiDM = computeDM(data.mission.dei);
