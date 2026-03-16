@@ -10,9 +10,9 @@
     <tbody>
       {{#each route}}
         <tr>
-          <td class="center">{{this.year}}.{{padDay this.day}}</td>
-          <td class="center">{{this.sector_name}}</td>
-          <td class="center">{{padHexAddress this.hex_x}}{{padHexAddress this.hex_y}}</td>
+          <td class="center">{{this.arrive_year}}.{{padDay this.arrive_day}}</td>
+          <td class="center">{{this.to_sector_name}}</td>
+          <td class="center">{{this.to_hex_code}}</td>
         </tr>
       {{/each}}
     </tbody>

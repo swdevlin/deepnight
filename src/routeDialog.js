@@ -29,7 +29,7 @@ export class RouteDialog extends Application {
 
   async getData() {
     try {
-      const response = await fetch("https://radiofreewaba.net/deepnight/data/route", {
+      const response = await fetch("https://mytravelleruniverse.net/c/revelation/api/jumps", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -40,7 +40,9 @@ export class RouteDialog extends Application {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      this.route = (await response.json()).reverse();
+      this.route = (await response.json()).sort((a, b) =>
+        b.arrive_year - a.arrive_year || b.arrive_day - a.arrive_day
+      );
 
     } catch (error) {
       console.error("Error making REST call:", error);

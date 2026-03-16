@@ -22,7 +22,18 @@
     },
     "Date": "Date",
     "dayButtonName": "Day",
-    "dayButtonTitle": "One day passes",
+    "dayButtonTitle": "Days pass",
+    "SetDateDialog": {
+      "Confirm": "Set",
+      "Day": "Day (1-365)",
+      "Title": "Set Date",
+      "Year": "Year"
+    },
+    "DayPassesDialog": {
+      "Confirm": "Advance",
+      "Label": "Number of days to pass",
+      "Title": "Days Pass"
+    },
     "daysOnMission": "Days on mission",
     "ExoticMaterials": "Exotic Materials",
     "Fatigue": "Fatigue",

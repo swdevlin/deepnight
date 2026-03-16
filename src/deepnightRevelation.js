@@ -60,7 +60,7 @@ export class DeepnightRevelation extends Application {
 
   async fetchRoute() {
     try {
-      const response = await fetch("https://radiofreewaba.net/deepnight/data/route", {
+      const response = await fetch("https://mytravelleruniverse.net/c/revelation/api/jumps", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -71,7 +71,9 @@ export class DeepnightRevelation extends Application {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      this.route = (await response.json()).reverse();
+      this.route = (await response.json()).sort((a, b) =>
+        b.arrive_year - a.arrive_year || b.arrive_day - a.arrive_day
+      );
 
     } catch (error) {
       console.error("Error fetching route:", error);
@@ -86,8 +88,8 @@ export class DeepnightRevelation extends Application {
 
     const currentRoute = this.route[0];
     return this.sectors.find(sector =>
-      sector.x === currentRoute.sector_x &&
-      sector.y === currentRoute.sector_y
+      sector.x === currentRoute.to_x &&
+      sector.y === currentRoute.to_y
     );
   }
 
@@ -96,8 +98,7 @@ export class DeepnightRevelation extends Application {
       return null;
     }
 
-    const { hex_x, hex_y } = this.route[0];
-    return (hex_x < 10 ? '0' + hex_x : hex_x) + '' + (hex_y < 10 ? '0' + hex_y : hex_y);
+    return this.route[0].to_hex_code;
   }
 
   async fetchSectors() {
@@ -261,6 +262,12 @@ export class DeepnightRevelation extends Application {
       evt.stopPropagation();
       evt.preventDefault();
       await this.showRoute();
+    });
+
+    html.on('click', '#dnr-set-date', (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      this.setDate();
     });
 
   }
@@ -1062,40 +1069,6 @@ export class DeepnightRevelation extends Application {
     }
   }
 
-  async updateRoute(sectorId, jumpHex) {
-    const hexX = parseInt(jumpHex.slice(0, -2));
-    const hexY = parseInt(jumpHex.slice(-2));
-    const sector = this.sectors.find(s => s.id === sectorId);
-
-    const url = 'https://radiofreewaba.net/deepnight/data/route';
-    const data = {
-      sector_x: sector.x,
-      sector_y: sector.y,
-      year: this.year,
-      day: this.day,
-      ship_id: 1,
-      hex_x: hexX,
-      hex_y: hexY,
-    }
-
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error('Failed to update route:', error);
-      ui.notifications.error(`Failed to update route: ${error.message}`);
-    }
-  }
-
   async jump(save=true) {
     const dialogData = {
       sectors: this.sectors,
@@ -1116,7 +1089,6 @@ export class DeepnightRevelation extends Application {
             const sectorId = parseInt(html.find('#sector').val());
             const jumpHex = html.find('#jumpHex').val();
             await this.doTheJump(save);
-            await this.updateRoute(sectorId, jumpHex);
             await this.fetchRoute();
           }
         },
@@ -1303,10 +1275,73 @@ export class DeepnightRevelation extends Application {
     await this.postTime('Reset');
   }
 
+  setDate() {
+    const content = `<form>
+      <div class="form-group">
+        <label>${game.i18n.localize('DEEPNIGHT.SetDateDialog.Year')}</label>
+        <input id="dnr-set-year" type="number" value="${this.year}" style="width:80px;"/>
+      </div>
+      <div class="form-group">
+        <label>${game.i18n.localize('DEEPNIGHT.SetDateDialog.Day')}</label>
+        <input id="dnr-set-day" type="number" min="1" max="365" value="${this.day}" style="width:80px;"/>
+      </div>
+    </form>`;
+
+    new Dialog({
+      title: game.i18n.localize('DEEPNIGHT.SetDateDialog.Title'),
+      content,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-regular fa-calendar-pen"></i>',
+          label: game.i18n.localize('DEEPNIGHT.SetDateDialog.Confirm'),
+          callback: async () => {
+            const year = parseInt(document.getElementById('dnr-set-year').value, 10);
+            const day = Math.min(365, Math.max(1, parseInt(document.getElementById('dnr-set-day').value, 10) || 1));
+            if (!isNaN(year)) this.year = year;
+            this.day = day;
+            await this.saveSettings();
+            await this.postTime();
+          }
+        },
+        cancel: {
+          icon: '<i class="fa-regular fa-xmark"></i>',
+          label: game.i18n.localize('Cancel'),
+        }
+      },
+      default: 'ok',
+    }).render(true);
+  }
+
   async dayPasses() {
-    this.incDay();
-    await this.saveSettings();
-    await this.postTime();
+    const content = `<form>
+      <div class="form-group">
+        <label>${game.i18n.localize('DEEPNIGHT.DayPassesDialog.Label')}</label>
+        <input id="dnr-days-to-pass" type="number" min="1" value="1" style="width:80px;"/>
+      </div>
+    </form>`;
+
+    new Dialog({
+      title: game.i18n.localize('DEEPNIGHT.DayPassesDialog.Title'),
+      content,
+      buttons: {
+        ok: {
+          icon: '<i class="fa-regular fa-calendar-day"></i>',
+          label: game.i18n.localize('DEEPNIGHT.DayPassesDialog.Confirm'),
+          callback: async () => {
+            const days = Math.max(1, parseInt(document.getElementById('dnr-days-to-pass').value, 10) || 1);
+            for (let i = 0; i < days; i++)
+              this.incDay();
+            await this.saveSettings();
+            await this.postTime();
+          }
+        },
+        cancel: {
+          icon: '<i class="fa-regular fa-xmark"></i>',
+          label: game.i18n.localize('Cancel'),
+        }
+      },
+      default: 'ok',
+    }).render(true);
   }
 
   async watchPasses() {
