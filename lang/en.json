@@ -39,6 +39,9 @@
     "Fatigue": "Fatigue",
     "HasBeenRefueled": "Deepnight Revelation has been refueled",
     "Hex": "Hex",
+    "JumpDialog": {
+      "From": "From"
+    },
     "lapsedDays": "Lapsed days",
     "leadershipEffect": "Difficult Leadership (INT) Effect",
     "jumpButtonName": "Jump",
@@ -105,6 +108,10 @@
       "ceiIntervalHint": "The number of days until crew training can be performed",
       "ceiTrainingName": "CEI Training",
       "ceiTrainingHint": "The number of days it takes to do crew training",
+      "campaignSlugName": "MTU Campaign Slug",
+      "campaignSlugHint": "The campaign slug from My Traveller Universe (e.g. 'revelation').",
+      "apiTokenName": "MTU API Token",
+      "apiTokenHint": "The API token from the Campaign Settings page in My Traveller Universe.",
       "reachJumpsName": "Reach Jumps",
       "reachJumpsHint": "The default number of jumps per reach",
       "suStorageName": "SU Storage space",

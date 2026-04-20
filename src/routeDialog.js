@@ -27,9 +27,14 @@ export class RouteDialog extends Application {
     this.render(force)
   }
 
+  apiBase() {
+    const slug = game.settings.get('deepnight', 'campaignSlug');
+    return `https://mytravelleruniverse.net/c/${slug}/api`;
+  }
+
   async getData() {
     try {
-      const response = await fetch("https://mytravelleruniverse.net/c/revelation/api/jumps", {
+      const response = await fetch(`${this.apiBase()}/jumps`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json"

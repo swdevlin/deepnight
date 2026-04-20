@@ -58,13 +58,24 @@ export class DeepnightRevelation extends Application {
     this.fetchRoute();
   }
 
+  apiBase() {
+    const slug = game.settings.get('deepnight', 'campaignSlug');
+    return `https://mytravelleruniverse.net/c/${slug}/api`;
+  }
+
+  apiHeaders() {
+    const token = game.settings.get('deepnight', 'apiToken');
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  }
+
   async fetchRoute() {
     try {
-      const response = await fetch("https://mytravelleruniverse.net/c/revelation/api/jumps", {
+      const response = await fetch(`${this.apiBase()}/jumps`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: { "Content-Type": "application/json" }
       });
 
       if (!response.ok) {
@@ -79,6 +90,64 @@ export class DeepnightRevelation extends Application {
       console.error("Error fetching route:", error);
       ui.notifications.error(`Call to fetch route failed: ${error.message}`);
     }
+  }
+
+  async fetchParsecs(sectorId) {
+    try {
+      const response = await fetch(`${this.apiBase()}/parsecs?sector_id=${sectorId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching parsecs:", error);
+      ui.notifications.error(`Failed to fetch hexes: ${error.message}`);
+      return [];
+    }
+  }
+
+  async logJump({ fromParsecId, toParsecId, shipId, departYear, departDay, arriveYear, arriveDay }) {
+    try {
+      const response = await fetch(`${this.apiBase()}/jumps`, {
+        method: 'POST',
+        headers: this.apiHeaders(),
+        body: JSON.stringify({
+          jump_log: {
+            ship_id: shipId,
+            from_parsec_id: fromParsecId,
+            to_parsec_id: toParsecId,
+            depart_year: departYear,
+            depart_day: departDay,
+            arrive_year: arriveYear,
+            arrive_day: arriveDay
+          }
+        })
+      });
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error((body.errors || [response.statusText]).join(', '));
+      }
+    } catch (error) {
+      console.error("Error logging jump:", error);
+      ui.notifications.error(`Failed to log jump: ${error.message}`);
+    }
+  }
+
+  static #hexDistance(x1, y1, x2, y2) {
+    const r1 = (-y1) - Math.floor((x1 - (x1 & 1)) / 2);
+    const r2 = (-y2) - Math.floor((x2 - (x2 & 1)) / 2);
+    const s1 = -x1 - r1;
+    const s2 = -x2 - r2;
+    return Math.max(Math.abs(x1 - x2), Math.abs(r1 - r2), Math.abs(s1 - s2));
+  }
+
+  static #sectorInRange(sector, fromX, fromY, jumpRange) {
+    const sxMin = sector.x * 32, sxMax = sector.x * 32 + 31;
+    const syMin = sector.y * 40 - 39, syMax = sector.y * 40;
+    const cx = Math.max(sxMin, Math.min(sxMax, fromX));
+    const cy = Math.max(syMin, Math.min(syMax, fromY));
+    return Math.abs(fromX - cx) <= jumpRange && Math.abs(fromY - cy) <= jumpRange;
   }
 
   currentSector() {
@@ -103,11 +172,9 @@ export class DeepnightRevelation extends Application {
 
   async fetchSectors() {
     try {
-      const response = await fetch("https://radiofreewaba.net/deepnight/data/sectors", {
+      const response = await fetch(`${this.apiBase()}/sectors`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: { "Content-Type": "application/json" }
       });
 
       if (!response.ok) {
@@ -120,7 +187,6 @@ export class DeepnightRevelation extends Application {
       console.error("Error making REST call:", error);
       ui.notifications.error(`Call to fetch sectors Failed: ${error.message}`);
     }
-
   }
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
@@ -1054,7 +1120,7 @@ export class DeepnightRevelation extends Application {
     ChatMessage.create(chatData, {});
   }
 
-  async doTheJump(save=true) {
+  async doTheJump() {
     for (let i=0; i < 6; i++)
       this.incDay();
     this.incWatch();
@@ -1063,43 +1129,108 @@ export class DeepnightRevelation extends Application {
     let watches = roller.total;
     for (let i=0; i < watches; i++)
       this.incWatch();
-    if (save) {
-      await this.postTime(game.i18n.localize('DEEPNIGHT.JumpCompleted'));
-      await this.saveSettings();
-    }
   }
 
   async jump(save=true) {
+    const fromParsecId = this.route.length > 0 ? this.route[0].to_parsec_id : null;
+    const fromX = this.route.length > 0 ? this.route[0].to_x : null;
+    const fromY = this.route.length > 0 ? this.route[0].to_y : null;
+    const shipId = this.route.length > 0 ? this.route[0].ship_id : null;
+
+    // Determine the ship's jump drive from the most recent jump's ship.
+    // Fetch ships list to resolve jump_drive for the current ship.
+    let jumpDrive = 4;
+    try {
+      const shipsResp = await fetch(`${this.apiBase()}/ships`, {
+        headers: { "Content-Type": "application/json" }
+      });
+      if (shipsResp.ok) {
+        const ships = await shipsResp.json();
+        const ship = ships.find(s => s.id === shipId);
+        if (ship) jumpDrive = ship.jump_drive || 4;
+      }
+    } catch (_) { /* keep default */ }
+
+    const reachableSectors = (fromX !== null)
+      ? this.sectors.filter(s => DeepnightRevelation.#sectorInRange(s, fromX, fromY, jumpDrive))
+      : this.sectors;
+
     const dialogData = {
-      sectors: this.sectors,
+      sectors: reachableSectors,
       currentSectorId: this.currentSector() ? this.currentSector().id : 0,
-      jumpHex: this.currentHex()
+      fromHex: this.currentHex() || '—',
+      fromSector: this.currentSector() ? this.currentSector().name : '—'
     };
 
     const content = await renderTemplate("modules/deepnight/src/templates/jumpDialog.hbs", dialogData);
 
-    new Dialog({
-      title: "Jump",
-      content: content,
-      buttons: {
-        yes: {
-          icon: '<i class="fas fa-check"></i>',
-          label: "Jump",
-          callback: async (html) => {
-            const sectorId = parseInt(html.find('#sector').val());
-            const jumpHex = html.find('#jumpHex').val();
-            await this.doTheJump(save);
-            await this.fetchRoute();
+    return new Promise((resolve) => {
+      new Dialog({
+        title: "Jump",
+        content: content,
+        buttons: {
+          yes: {
+            icon: '<i class="fas fa-check"></i>',
+            label: "Jump",
+            callback: async (html) => {
+              const toParsecId = parseInt(html.find('#hex').val());
+              if (!toParsecId) {
+                ui.notifications.warn("Please select a destination hex.");
+                resolve(false);
+                return;
+              }
+
+              const departYear = this.status.year;
+              const departDay = this.status.day;
+
+              await this.doTheJump();
+
+              const arriveYear = this.status.year;
+              const arriveDay = this.status.day;
+
+              if (save) {
+                await this.postTime(game.i18n.localize('DEEPNIGHT.JumpCompleted'));
+                await this.saveSettings();
+                if (fromParsecId && toParsecId) {
+                  await this.logJump({ fromParsecId, toParsecId, shipId, departYear, departDay, arriveYear, arriveDay });
+                }
+                await this.fetchRoute();
+              }
+
+              resolve(true);
+            }
+          },
+          no: {
+            icon: '<i class="fas fa-times"></i>',
+            label: "Cancel",
+            callback: () => resolve(false)
           }
         },
-        no: {
-          icon: '<i class="fas fa-times"></i>',
-          label: "Cancel",
-          callback: () => {}
+        default: "yes",
+        render: (html) => {
+          const populateHexes = async (sectorId, selectedParsecId = null) => {
+            const hexSelect = html.find('#hex');
+            hexSelect.html('<option value="">Loading…</option>').prop('disabled', true);
+            const parsecs = await this.fetchParsecs(sectorId);
+            const filtered = (fromX !== null)
+              ? parsecs.filter(p => DeepnightRevelation.#hexDistance(fromX, fromY, p.x, p.y) <= jumpDrive)
+              : parsecs;
+            const options = filtered.map(p =>
+              `<option value="${p.id}"${p.id === selectedParsecId ? ' selected' : ''}>${p.hex_code}</option>`
+            ).join('');
+            hexSelect.html('<option value="">Select hex…</option>' + options).prop('disabled', false);
+          };
+
+          html.find('#sector').on('change', (evt) => {
+            const sectorId = parseInt(evt.target.value);
+            if (sectorId) populateHexes(sectorId);
+          });
+
+          const initialSectorId = parseInt(html.find('#sector').val());
+          if (initialSectorId) populateHexes(initialSectorId);
         }
-      },
-      default: "yes"
-    }).render(true);
+      }).render(true);
+    });
   }
 
   async resolveReach({jumps, supplyUnitsPerDay}) {

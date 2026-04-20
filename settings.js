@@ -149,4 +149,24 @@ Hooks.once("init", async () => {
     default: []
   });
 
+  await game.settings.register("deepnight", "campaignSlug", {
+    name: game.i18n.localize('DEEPNIGHT.Settings.campaignSlugName'),
+    hint: game.i18n.localize('DEEPNIGHT.Settings.campaignSlugHint'),
+    scope: "world",
+    config: true,
+    type: String,
+    restricted: true,
+    default: ""
+  });
+
+  await game.settings.register("deepnight", "apiToken", {
+    name: game.i18n.localize('DEEPNIGHT.Settings.apiTokenName'),
+    hint: game.i18n.localize('DEEPNIGHT.Settings.apiTokenHint'),
+    scope: "world",
+    config: true,
+    type: String,
+    restricted: true,
+    default: ""
+  });
+
 });
